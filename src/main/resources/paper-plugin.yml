@@ -1,0 +1,4 @@
+name: SMPWarp
+version: '1.0-SNAPSHOT'
+main: xyz.f2reninj5.sMPWarp.SMPWarp
+api-version: '1.21'
