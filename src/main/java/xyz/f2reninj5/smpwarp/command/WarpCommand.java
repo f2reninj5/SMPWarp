@@ -1,15 +1,11 @@
 package xyz.f2reninj5.smpwarp.command;
 
-import com.earth2me.essentials.AsyncTeleport;
-import com.earth2me.essentials.Essentials;
 import com.earth2me.essentials.Trade;
 import com.earth2me.essentials.api.IAsyncTeleport;
 import io.papermc.paper.command.brigadier.BasicCommand;
 import io.papermc.paper.command.brigadier.CommandSourceStack;
 import net.ess3.api.IEssentials;
 import net.ess3.api.IUser;
-import org.bukkit.Bukkit;
-import org.bukkit.entity.Player;
 import org.bukkit.event.player.PlayerTeleportEvent;
 import org.jetbrains.annotations.NotNull;
 import xyz.f2reninj5.smpwarp.model.Warp;
