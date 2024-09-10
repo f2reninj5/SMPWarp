@@ -1,14 +1,11 @@
-package xyz.f2reninj5.sMPWarp;
+package xyz.f2reninj5.smpwarp;
 
-import com.mojang.brigadier.Command;
 import io.papermc.paper.command.brigadier.Commands;
 import io.papermc.paper.plugin.lifecycle.event.LifecycleEventManager;
 import io.papermc.paper.plugin.lifecycle.event.types.LifecycleEvents;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.java.JavaPlugin;
-import xyz.f2reninj5.sMPWarp.command.SetWarpCommand;
-
-import java.util.List;
+import xyz.f2reninj5.smpwarp.command.SetWarpCommand;
 
 public final class SMPWarp extends JavaPlugin {
 

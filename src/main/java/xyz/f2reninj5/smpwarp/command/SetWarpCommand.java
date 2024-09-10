@@ -1,4 +1,4 @@
-package xyz.f2reninj5.sMPWarp.command;
+package xyz.f2reninj5.smpwarp.command;
 
 import io.papermc.paper.command.brigadier.BasicCommand;
 import io.papermc.paper.command.brigadier.CommandSourceStack;
@@ -33,7 +33,7 @@ public class SetWarpCommand implements BasicCommand {
 
         PrintWriter writer = null;
         try {
-            writer = new PrintWriter(new File(args[0] + ".yml"));
+            writer = new PrintWriter(new File("plugins/smpwarp/warps" + args[0] + ".yml"));
         } catch (FileNotFoundException e) {
             throw new RuntimeException(e);
         }
