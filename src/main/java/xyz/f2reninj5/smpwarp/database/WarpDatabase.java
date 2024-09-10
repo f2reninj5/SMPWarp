@@ -1,6 +1,8 @@
 package xyz.f2reninj5.smpwarp.database;
 
+import org.bukkit.Bukkit;
 import org.bukkit.Location;
+import xyz.f2reninj5.smpwarp.model.Warp;
 
 import java.sql.*;
 
@@ -48,6 +50,33 @@ public class WarpDatabase {
             statement.setDouble(8, location.getPitch());
             statement.setString(9, createdBy);
             statement.executeUpdate();
+        }
+    }
+
+    public Warp getWarp(String name, String group) throws SQLException {
+        try (PreparedStatement statement = connection.prepareStatement("""
+            SELECT * FROM warp WHERE `name` = ? AND `group` = ?
+        """)) {
+            statement.setString(1, name);
+            statement.setString(2, group);
+            ResultSet resultSet = statement.executeQuery();
+            if (resultSet.next()) {
+                return new Warp(
+                    resultSet.getString("name"),
+                    resultSet.getString("group"),
+                    new Location(
+                        Bukkit.getWorld("world"),
+                        resultSet.getDouble("x"),
+                        resultSet.getDouble("y"),
+                        resultSet.getDouble("z"),
+                        resultSet.getFloat("yaw"),
+                        resultSet.getFloat("pitch")
+                    ),
+                    resultSet.getString("created_by")
+                );
+            } else {
+                return null;
+            }
         }
     }
 }
