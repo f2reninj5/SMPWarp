@@ -6,18 +6,24 @@ import io.papermc.paper.plugin.lifecycle.event.types.LifecycleEvents;
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.java.JavaPlugin;
-import xyz.f2reninj5.smpwarp.command.SetWarpCommand;
+import xyz.f2reninj5.smpwarp.command.CreateWarpCommand;
 import xyz.f2reninj5.smpwarp.database.WarpDatabase;
 
 import java.sql.SQLException;
+import java.util.List;
 
 public final class SMPWarp extends JavaPlugin {
 
     private static SMPWarp plugin;
-    private WarpDatabase warpDatabase;
+
+    private static WarpDatabase warpDatabase;
 
     public static SMPWarp getPlugin() {
         return plugin;
+    }
+
+    public static WarpDatabase getWarpDatabase() {
+        return warpDatabase;
     }
 
     @Override
@@ -39,7 +45,12 @@ public final class SMPWarp extends JavaPlugin {
         LifecycleEventManager<Plugin> manager = this.getLifecycleManager();
         manager.registerEventHandler(LifecycleEvents.COMMANDS, event -> {
             final Commands commands = event.registrar();
-            commands.register("setwarp", "errr errr", new SetWarpCommand());
+            commands.register(
+                "createwarp",
+                "errr errr",
+                List.of("newwarp", "setwarp", "cwarp", "nwarp", "swarp"),
+                new CreateWarpCommand()
+            );
         });
 
     }
