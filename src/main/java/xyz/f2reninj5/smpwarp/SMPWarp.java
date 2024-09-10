@@ -9,8 +9,17 @@ import xyz.f2reninj5.smpwarp.command.SetWarpCommand;
 
 public final class SMPWarp extends JavaPlugin {
 
+    private static SMPWarp plugin;
+
+    public static SMPWarp getPlugin() {
+        return plugin;
+    }
+
     @Override
     public void onEnable() {
+        plugin = this;
+        this.getDataFolder().mkdirs();
+
         LifecycleEventManager<Plugin> manager = this.getLifecycleManager();
         manager.registerEventHandler(LifecycleEvents.COMMANDS, event -> {
             final Commands commands = event.registrar();

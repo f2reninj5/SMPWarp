@@ -4,6 +4,7 @@ import io.papermc.paper.command.brigadier.BasicCommand;
 import io.papermc.paper.command.brigadier.CommandSourceStack;
 import org.jetbrains.annotations.NotNull;
 import org.yaml.snakeyaml.Yaml;
+import xyz.f2reninj5.smpwarp.SMPWarp;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -33,7 +34,9 @@ public class SetWarpCommand implements BasicCommand {
 
         PrintWriter writer = null;
         try {
-            writer = new PrintWriter(new File("plugins/smpwarp/warps" + args[0] + ".yml"));
+            File file = new File(SMPWarp.getPlugin().getDataFolder().getAbsoluteFile() + "/warp", args[0] + ".yml");
+            file.getParentFile().mkdir();
+            writer = new PrintWriter(file);
         } catch (FileNotFoundException e) {
             throw new RuntimeException(e);
         }
