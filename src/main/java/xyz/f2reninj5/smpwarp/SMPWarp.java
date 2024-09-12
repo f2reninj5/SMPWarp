@@ -7,6 +7,7 @@ import io.papermc.paper.plugin.lifecycle.event.types.LifecycleEvents;
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.java.JavaPlugin;
+import xyz.f2reninj5.smpwarp.command.BackCommand;
 import xyz.f2reninj5.smpwarp.command.CreateWarpCommand;
 import xyz.f2reninj5.smpwarp.command.WarpCommand;
 import xyz.f2reninj5.smpwarp.database.WarpDatabase;
@@ -64,6 +65,11 @@ public final class SMPWarp extends JavaPlugin {
                     "warp",
                     "eee eee",
                     new WarpCommand()
+            );
+            commands.register(
+                "back",
+                "teleport back innit",
+                new BackCommand()
             );
         });
 
