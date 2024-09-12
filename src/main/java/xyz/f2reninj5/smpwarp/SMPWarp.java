@@ -10,6 +10,7 @@ import org.bukkit.plugin.java.JavaPlugin;
 import xyz.f2reninj5.smpwarp.command.CreateWarpCommand;
 import xyz.f2reninj5.smpwarp.command.WarpCommand;
 import xyz.f2reninj5.smpwarp.database.WarpDatabase;
+import xyz.f2reninj5.smpwarp.listener.TeleportListener;
 
 import java.sql.SQLException;
 import java.util.List;
@@ -47,6 +48,8 @@ public final class SMPWarp extends JavaPlugin {
             System.out.println("Failed to connect to the database! " + exception.getMessage());
             Bukkit.getPluginManager().disablePlugin(this);
         }
+
+        getServer().getPluginManager().registerEvents(new TeleportListener(), this);
 
         LifecycleEventManager<Plugin> manager = this.getLifecycleManager();
         manager.registerEventHandler(LifecycleEvents.COMMANDS, event -> {
