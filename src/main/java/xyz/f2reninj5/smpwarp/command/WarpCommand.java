@@ -1,18 +1,14 @@
 package xyz.f2reninj5.smpwarp.command;
 
-import com.earth2me.essentials.Trade;
-import com.earth2me.essentials.api.IAsyncTeleport;
 import io.papermc.paper.command.brigadier.BasicCommand;
 import io.papermc.paper.command.brigadier.CommandSourceStack;
-import net.ess3.api.IEssentials;
-import net.ess3.api.IUser;
-import org.bukkit.event.player.PlayerTeleportEvent;
+import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
+import xyz.f2reninj5.smpwarp.event.TeleportEvent;
 import xyz.f2reninj5.smpwarp.model.Warp;
 import xyz.f2reninj5.smpwarp.SMPWarp;
 
 import java.sql.SQLException;
-import java.util.concurrent.CompletableFuture;
 
 public class WarpCommand implements BasicCommand {
 
@@ -28,15 +24,9 @@ public class WarpCommand implements BasicCommand {
                 return;
             }
 
-            IEssentials essentials = SMPWarp.getEssentialsPlugin();
-            IUser user = essentials.getUser(stack.getExecutor().getUniqueId());
-            IAsyncTeleport asyncTeleport = user.getAsyncTeleport();
-            asyncTeleport.teleport(
-                warp.location,
-                new Trade(0, essentials),
-                PlayerTeleportEvent.TeleportCause.COMMAND,
-                CompletableFuture.completedFuture(true)
-            );
+            TeleportEvent teleportEvent = new TeleportEvent((Player) stack.getExecutor(), stack.getExecutor().getLocation(), warp.location);
+            teleportEvent.callEvent();
+            stack.getExecutor().teleport(warp.location);
         } catch (SQLException exception) {
             exception.printStackTrace();
         }
