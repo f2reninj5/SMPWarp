@@ -6,14 +6,13 @@ import org.bukkit.persistence.PersistentDataAdapterContext;
 import org.bukkit.persistence.PersistentDataType;
 import org.jetbrains.annotations.NotNull;
 
-import java.util.List;
 import java.util.UUID;
 
-public class LocationDataType implements PersistentDataType<String[], Location> {
+public class LocationDataType implements PersistentDataType<String, Location> {
 
     @Override
-    public @NotNull Class<String[]> getPrimitiveType() {
-        return String[].class;
+    public @NotNull Class<String> getPrimitiveType() {
+        return String.class;
     }
 
     @Override
@@ -22,8 +21,8 @@ public class LocationDataType implements PersistentDataType<String[], Location> 
     }
 
     @Override
-    public String @NotNull [] toPrimitive(@NotNull Location complex, @NotNull PersistentDataAdapterContext context) {
-        List<String> list = List.of(
+    public @NotNull String toPrimitive(@NotNull Location complex, @NotNull PersistentDataAdapterContext context) {
+        return String.join(" ",
             complex.getWorld().getUID().toString(),
             Double.toString(complex.getX()),
             Double.toString(complex.getY()),
@@ -31,19 +30,19 @@ public class LocationDataType implements PersistentDataType<String[], Location> 
             Float.toString(complex.getYaw()),
             Float.toString(complex.getPitch())
         );
-        return list.toArray(new String[0]);
     }
 
     @Override
-    public @NotNull Location fromPrimitive(String @NotNull [] primitive, @NotNull PersistentDataAdapterContext context) {
-        Location location = new Location(
-            Bukkit.getWorld(UUID.fromString(primitive[0])),
-            Double.parseDouble(primitive[1]),
-            Double.parseDouble(primitive[2]),
-            Double.parseDouble(primitive[3]),
-            Float.parseFloat(primitive[4]),
-            Float.parseFloat(primitive[5])
+    public @NotNull Location fromPrimitive(@NotNull String primitive, @NotNull PersistentDataAdapterContext context) {
+        String[] arguments = primitive.split(" ", 6);
+        Location complex = new Location(
+            Bukkit.getWorld(UUID.fromString(arguments[0])),
+            Double.parseDouble(arguments[1]),
+            Double.parseDouble(arguments[2]),
+            Double.parseDouble(arguments[3]),
+            Float.parseFloat(arguments[4]),
+            Float.parseFloat(arguments[5])
         );
-        return location;
+        return complex;
     }
 }
