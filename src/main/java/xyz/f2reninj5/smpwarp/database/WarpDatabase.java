@@ -5,6 +5,7 @@ import org.bukkit.Location;
 import xyz.f2reninj5.smpwarp.model.Warp;
 
 import java.sql.*;
+import java.util.UUID;
 
 public class WarpDatabase {
 
@@ -65,7 +66,7 @@ public class WarpDatabase {
                     resultSet.getString("name"),
                     resultSet.getString("group"),
                     new Location(
-                        Bukkit.getWorld("world"),
+                        Bukkit.getWorld(UUID.fromString(resultSet.getString("world"))),
                         resultSet.getDouble("x"),
                         resultSet.getDouble("y"),
                         resultSet.getDouble("z"),
