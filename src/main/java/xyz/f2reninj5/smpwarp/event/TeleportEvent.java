@@ -10,10 +10,12 @@ public class TeleportEvent extends Event {
 
     private static final HandlerList HANDLER_LIST = new HandlerList();
     private final Player teleportee;
+    private final Location source;
     private final Location destination;
 
-    public TeleportEvent(final Player teleportee, final Location destination) {
+    public TeleportEvent(final Player teleportee, final Location source, final Location destination) {
         this.teleportee = teleportee;
+        this.source = source;
         this.destination = destination;
     }
 
@@ -28,6 +30,10 @@ public class TeleportEvent extends Event {
 
     public Player getTeleportee() {
         return teleportee;
+    }
+
+    public Location getSource() {
+        return source;
     }
 
     public Location getDestination() {
