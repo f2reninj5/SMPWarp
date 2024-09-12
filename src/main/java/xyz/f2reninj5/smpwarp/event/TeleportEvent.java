@@ -25,4 +25,12 @@ public class TeleportEvent extends Event {
     public @NotNull HandlerList getHandlers() {
         return HANDLER_LIST;
     }
+
+    public Player getTeleportee() {
+        return teleportee;
+    }
+
+    public Location getDestination() {
+        return destination;
+    }
 }
