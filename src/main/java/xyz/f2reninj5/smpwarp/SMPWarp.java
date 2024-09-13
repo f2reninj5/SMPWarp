@@ -1,6 +1,5 @@
 package xyz.f2reninj5.smpwarp;
 
-import com.earth2me.essentials.Essentials;
 import io.papermc.paper.command.brigadier.Commands;
 import io.papermc.paper.plugin.lifecycle.event.LifecycleEventManager;
 import io.papermc.paper.plugin.lifecycle.event.types.LifecycleEvents;
@@ -19,15 +18,10 @@ import java.util.List;
 public final class SMPWarp extends JavaPlugin {
 
     private static SMPWarp plugin;
-    private static Essentials essentialsPlugin;
     private static WarpDatabase warpDatabase;
 
     public static SMPWarp getPlugin() {
         return plugin;
-    }
-
-    public static Essentials getEssentialsPlugin() {
-        return (Essentials) plugin.getServer().getPluginManager().getPlugin("Essentials");
     }
 
     public static WarpDatabase getWarpDatabase() {
