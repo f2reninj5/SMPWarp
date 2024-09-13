@@ -11,18 +11,23 @@ public class CreateWarpCommand implements BasicCommand {
 
     @Override
     public void execute(@NotNull CommandSourceStack stack, @NotNull String[] args) {
-        if (args.length == 1) {
-            try {
-                SMPWarp.getWarpDatabase().createWarp(args[1], "", stack.getLocation(), stack.getExecutor().getUniqueId().toString());
-            } catch (SQLException exception) {
-                throw new RuntimeException(exception);
-            }
-        } else if (args.length == 2) {
-            try {
-                SMPWarp.getWarpDatabase().createWarp(args[1], args[0], stack.getLocation(), stack.getExecutor().getUniqueId().toString());
-            } catch (SQLException exception) {
-                exception.printStackTrace();
-            }
+        if (args.length < 1) {
+            return;
+        }
+
+        String group = "";
+        String name = args[0];
+
+        if (args.length > 1) {
+            group = args[0];
+            name = args[1];
+        }
+
+        try {
+            SMPWarp.getWarpDatabase().createWarp(name, group, stack.getLocation(),
+                    stack.getExecutor().getUniqueId().toString());
+        } catch (SQLException exception) {
+            exception.printStackTrace();
         }
     }
 }
