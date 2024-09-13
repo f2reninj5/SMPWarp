@@ -36,6 +36,13 @@ public class WarpCommand implements BasicCommand {
 
     @Override
     public @NotNull Collection<String> suggest(@NotNull CommandSourceStack stack, @NotNull String[] args) {
+        if (args.length == 0) {
+            try {
+                return SMPWarp.getWarpDatabase().getWarpGroups();
+            } catch (SQLException e) {
+                throw new RuntimeException(e);
+            }
+        }
         if (args.length == 1) {
             try {
                 return SMPWarp.getWarpDatabase().getWarpGroups(args[0]);
