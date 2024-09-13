@@ -17,12 +17,20 @@ public class WarpCommand implements BasicCommand {
 
     @Override
     public void execute(@NotNull CommandSourceStack stack, @NotNull String[] args) {
-        if (args.length != 2) {
+        if (args.length < 1) {
             return;
         }
 
+        String group = "";
+        String name = args[0];
+
+        if (args.length > 1) {
+            group = args[0];
+            name = args[1];
+        }
+
         try {
-            Warp warp = SMPWarp.getWarpDatabase().getWarp(args[1], args[0]);
+            Warp warp = SMPWarp.getWarpDatabase().getWarp(name, group);
             if (warp == null) {
                 return;
             }
