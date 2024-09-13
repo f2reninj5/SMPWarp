@@ -109,4 +109,18 @@ public class WarpDatabase {
             return groups;
         }
     }
+
+    public List<String> getWarpNames() throws SQLException {
+        try (Statement statement = connection.createStatement()) {
+            ResultSet resultSet = statement.executeQuery("""
+                SELECT `name` FROM warp
+            """);
+            List<String> names = new ArrayList<String>();
+            while (resultSet.next()) {
+                names.add(resultSet.getString("warp"));
+            }
+            return names;
+        }
+
+    }
 }
