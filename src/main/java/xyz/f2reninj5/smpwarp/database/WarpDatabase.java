@@ -18,7 +18,7 @@ public class WarpDatabase {
         try (Statement statement = connection.createStatement()) {
             statement.execute("""
             CREATE TABLE IF NOT EXISTS warp (`name` TEXT NOT NULL,
-                `group` TEXT NOT NULL,
+                `group` TEXT DEFAULT "" NOT NULL,
                 `world` TEXT NOT NULL,
                 `x` REAL NOT NULL,
                 `y` REAL NOT NULL,
@@ -45,6 +45,23 @@ public class WarpDatabase {
         """)) {
             statement.setString(1, name);
             statement.setString(2, group);
+            statement.setString(3, location.getWorld().getUID().toString());
+            statement.setDouble(4, location.getX());
+            statement.setDouble(5, location.getY());
+            statement.setDouble(6, location.getZ());
+            statement.setDouble(7, location.getYaw());
+            statement.setDouble(8, location.getPitch());
+            statement.setString(9, createdBy);
+            statement.executeUpdate();
+        }
+    }
+
+    public void createWarp(String name, Location location, String createdBy) throws SQLException {
+        try (PreparedStatement statement = connection.prepareStatement("""
+            INSERT INTO warp (`name`, `world`, `x`, `y`, `z`, `yaw`, `pitch`, `created_by`)
+            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
+        """)) {
+            statement.setString(1, name);
             statement.setString(3, location.getWorld().getUID().toString());
             statement.setDouble(4, location.getX());
             statement.setDouble(5, location.getY());
@@ -86,7 +103,7 @@ public class WarpDatabase {
     public List<String> getWarpGroups() throws SQLException {
         try (Statement statement = connection.createStatement()) {
             ResultSet resultSet = statement.executeQuery("""
-                SELECT `group` FROM warp
+                SELECT `group` FROM warp WHERE `group` != ""
             """);
             List<String> groups = new ArrayList<String>();
             while (resultSet.next()) {
@@ -98,7 +115,7 @@ public class WarpDatabase {
 
     public List<String> getWarpGroups(String filter) throws SQLException {
         try (PreparedStatement statement = connection.prepareStatement("""
-           SELECT `group` FROM warp WHERE `group` LIKE ?
+           SELECT `group` FROM warp WHERE `group` LIKE ? AND `group` != ""
         """)) {
             statement.setString(1, filter + "%");
             ResultSet resultSet = statement.executeQuery();
@@ -139,9 +156,9 @@ public class WarpDatabase {
 
     public List<String> getWarpNames(String group, String filter) throws SQLException {
         try (PreparedStatement statement = connection.prepareStatement("""
-            SELECT `name` FROM warp WHERE `group` LIKE ? AND `name` LIKE ?
+            SELECT `name` FROM warp WHERE `group` = ? AND `name` LIKE ?
         """)) {
-            statement.setString(1, group + "%");
+            statement.setString(1, group);
             statement.setString(2, filter + "%");
             ResultSet resultSet = statement.executeQuery();
             List<String> names = new ArrayList<>();
