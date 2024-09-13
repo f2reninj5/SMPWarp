@@ -98,11 +98,11 @@ public class WarpDatabase {
 
     public List<String> getWarpGroups(String filter) throws SQLException {
         try (PreparedStatement statement = connection.prepareStatement("""
-           SELECT `group` FROM warp WHERE `group` LIKE `?%`
+           SELECT `group` FROM warp WHERE `group` LIKE ?
         """)) {
-            statement.setString(1, filter);
+            statement.setString(1, filter + "%");
             ResultSet resultSet = statement.executeQuery();
-            List<String> groups = new ArrayList<String>();
+            List<String> groups = new ArrayList<>();
             while (resultSet.next()) {
                 groups.add(resultSet.getString("group"));
             }
