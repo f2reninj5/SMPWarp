@@ -9,6 +9,8 @@ import xyz.f2reninj5.smpwarp.model.Warp;
 import xyz.f2reninj5.smpwarp.SMPWarp;
 
 import java.sql.SQLException;
+import java.util.Collection;
+import java.util.List;
 
 public class WarpCommand implements BasicCommand {
 
@@ -30,5 +32,17 @@ public class WarpCommand implements BasicCommand {
         } catch (SQLException exception) {
             exception.printStackTrace();
         }
+    }
+
+    @Override
+    public @NotNull Collection<String> suggest(@NotNull CommandSourceStack stack, @NotNull String[] args) {
+        if (args.length == 1) {
+            try {
+                return SMPWarp.getWarpDatabase().getWarpGroups(args[0]);
+            } catch (SQLException exception) {
+                throw new RuntimeException(exception.getMessage());
+            }
+        }
+        return List.of();
     }
 }
