@@ -5,6 +5,8 @@ import org.bukkit.Location;
 import xyz.f2reninj5.smpwarp.model.Warp;
 
 import java.sql.*;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
 
 public class WarpDatabase {
@@ -78,6 +80,19 @@ public class WarpDatabase {
             } else {
                 return null;
             }
+        }
+    }
+
+    public List<String> getWarpGroups() throws SQLException {
+        try (Statement statement = connection.createStatement()) {
+            ResultSet resultSet = statement.executeQuery("""
+                SELECT `group` FROM warp
+            """);
+            List<String> groups = new ArrayList<String>();
+            while (resultSet.next()) {
+                groups.add(resultSet.getString("group"));
+            }
+            return groups;
         }
     }
 }
