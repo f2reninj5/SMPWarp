@@ -43,12 +43,17 @@ public class WarpCommand implements BasicCommand {
             } catch (SQLException e) {
                 throw new RuntimeException(e);
             }
-        }
-        if (args.length == 1) {
+        } else if (args.length == 1) {
             try {
                 return SMPWarp.getWarpDatabase().getWarpGroups(args[0]);
             } catch (SQLException exception) {
                 throw new RuntimeException(exception.getMessage());
+            }
+        } else if (args.length == 2) {
+            try {
+                return SMPWarp.getWarpDatabase().getWarpNames(args[0], args[1]);
+            } catch (SQLException exception) {
+                throw new RuntimeException(exception);
             }
         }
         return List.of();
