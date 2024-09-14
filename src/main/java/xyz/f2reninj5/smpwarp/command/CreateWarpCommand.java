@@ -6,6 +6,8 @@ import org.jetbrains.annotations.NotNull;
 import xyz.f2reninj5.smpwarp.SMPWarp;
 
 import java.sql.SQLException;
+import java.util.Collection;
+import java.util.List;
 
 public class CreateWarpCommand implements BasicCommand {
 
@@ -29,5 +31,23 @@ public class CreateWarpCommand implements BasicCommand {
         } catch (SQLException exception) {
             exception.printStackTrace();
         }
+    }
+
+    @Override
+    public @NotNull Collection<String> suggest(@NotNull CommandSourceStack stack, @NotNull String[] args) {
+        if (args.length == 0) {
+            try {
+                return SMPWarp.getWarpDatabase().getWarpGroups();
+            } catch (SQLException e) {
+                throw new RuntimeException(e);
+            }
+        } else if (args.length == 1) {
+            try {
+                return SMPWarp.getWarpDatabase().getWarpGroups(args[0]);
+            } catch (SQLException exception) {
+                throw new RuntimeException(exception.getMessage());
+            }
+        }
+        return List.of();
     }
 }
