@@ -33,6 +33,22 @@ public class CreateWarpCommand implements BasicCommand {
             .build();
     }
 
+    private Component getFailureMessage(String warpGroup, String warpName) {
+        TextComponent.Builder builder = text()
+            .content("Warp ").color(GOLD);
+
+        if (warpGroup != "") {
+            builder
+                .append(text(warpGroup, RED))
+                .append(text(": ", GOLD));
+        }
+
+        return builder
+            .append(text(warpName, RED))
+            .append(text(" already exists.", GOLD))
+            .build();
+    }
+
     @Override
     public void execute(@NotNull CommandSourceStack stack, @NotNull String[] args) {
         if (args.length < 1) {
@@ -48,9 +64,14 @@ public class CreateWarpCommand implements BasicCommand {
         }
 
         try {
-            SMPWarp.getWarpDatabase().createWarp(name, group, stack.getLocation(),
-                    stack.getExecutor().getUniqueId().toString());
-            stack.getExecutor().sendMessage(getSuccessMessage(group, name));
+            if (SMPWarp.getWarpDatabase().warpExists(group, name)) {
+                stack.getExecutor().sendMessage(getSuccessMessage(group, name));
+                return;
+            } else {
+                SMPWarp.getWarpDatabase().createWarp(name, group, stack.getLocation(),
+                        stack.getExecutor().getUniqueId().toString());
+                stack.getExecutor().sendMessage(getSuccessMessage(group, name));
+            }
         } catch (SQLException exception) {
             exception.printStackTrace();
         }
