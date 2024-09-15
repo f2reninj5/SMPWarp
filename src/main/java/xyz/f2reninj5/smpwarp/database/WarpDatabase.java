@@ -187,4 +187,27 @@ public class WarpDatabase {
     public boolean warpExists(String name) throws SQLException {
         return warpExists("", name);
     }
+
+    public List<Warp> getAllWarps() throws SQLException {
+        try (Statement statement = connection.createStatement()) {
+            ResultSet resultSet = statement.executeQuery("SELECT * FROM warp");
+            List<Warp> warps = new ArrayList<>();
+            while (resultSet.next()) {
+                warps.add(new Warp(
+                    resultSet.getString("name"),
+                    resultSet.getString("group"),
+                    new Location(
+                        Bukkit.getWorld(UUID.fromString(resultSet.getString("world"))),
+                        resultSet.getDouble("x"),
+                        resultSet.getDouble("y"),
+                        resultSet.getDouble("z"),
+                        resultSet.getFloat("yaw"),
+                        resultSet.getFloat("pitch")
+                    ),
+                    resultSet.getString("created_by")
+                ));
+            }
+            return warps;
+        }
+    }
 }
