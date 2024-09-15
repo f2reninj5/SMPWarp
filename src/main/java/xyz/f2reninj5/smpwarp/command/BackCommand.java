@@ -14,6 +14,7 @@ import xyz.f2reninj5.smpwarp.persistentDataType.LocationDataType;
 
 import static net.kyori.adventure.text.Component.text;
 import static net.kyori.adventure.text.format.NamedTextColor.GOLD;
+import static net.kyori.adventure.text.format.NamedTextColor.RED;
 
 public class BackCommand implements BasicCommand {
 
@@ -21,6 +22,13 @@ public class BackCommand implements BasicCommand {
         return text()
             .content("Returned to previous location.")
             .color(GOLD)
+            .build();
+    }
+
+    private Component getFailureMessage() {
+        return text()
+            .content("You have no location to return to.")
+            .color(RED)
             .build();
     }
 
@@ -34,6 +42,8 @@ public class BackCommand implements BasicCommand {
             teleportEvent.callEvent();
             stack.getExecutor().teleport(destination);
             stack.getExecutor().sendMessage(getSuccessMessage());
+        } else {
+            stack.getExecutor().sendMessage(getFailureMessage());
         }
     }
 }
