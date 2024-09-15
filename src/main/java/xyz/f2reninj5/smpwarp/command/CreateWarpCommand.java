@@ -1,9 +1,11 @@
 package xyz.f2reninj5.smpwarp.command;
 
+import de.bluecolored.bluemap.api.markers.POIMarker;
 import io.papermc.paper.command.brigadier.BasicCommand;
 import io.papermc.paper.command.brigadier.CommandSourceStack;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.TextComponent;
+import org.bukkit.Location;
 import org.jetbrains.annotations.NotNull;
 import xyz.f2reninj5.smpwarp.SMPWarp;
 
@@ -49,6 +51,10 @@ public class CreateWarpCommand implements BasicCommand {
             .build();
     }
 
+    private void createMarker() {
+
+    }
+
     @Override
     public void execute(@NotNull CommandSourceStack stack, @NotNull String[] args) {
         if (args.length < 1) {
@@ -67,8 +73,21 @@ public class CreateWarpCommand implements BasicCommand {
             if (SMPWarp.getWarpDatabase().warpExists(group, name)) {
                 stack.getExecutor().sendMessage(getFailureMessage(group, name));
             } else {
-                SMPWarp.getWarpDatabase().createWarp(name, group, stack.getLocation(),
+                Location location = stack.getLocation();
+
+                SMPWarp.getWarpDatabase().createWarp(name, group, location,
                         stack.getExecutor().getUniqueId().toString());
+
+                String markerName = name;
+                if (group != "") {
+                    markerName = group + " " + name;
+                }
+
+                POIMarker marker = POIMarker.builder()
+                    .label(markerName)
+                    .position(location.getX(), location.getY(), location.getZ())
+                    .build();
+
                 stack.getExecutor().sendMessage(getSuccessMessage(group, name));
             }
         } catch (SQLException exception) {
