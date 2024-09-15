@@ -18,6 +18,7 @@ import java.util.List;
 import static net.kyori.adventure.text.Component.text;
 import static net.kyori.adventure.text.format.NamedTextColor.GOLD;
 import static net.kyori.adventure.text.format.NamedTextColor.RED;
+import static xyz.f2reninj5.smpwarp.Teleport.teleport;
 
 public class WarpCommand implements BasicCommand {
 
@@ -57,9 +58,7 @@ public class WarpCommand implements BasicCommand {
                 return;
             }
 
-            TeleportEvent teleportEvent = new TeleportEvent((Player) stack.getExecutor(), stack.getExecutor().getLocation(), warp.location);
-            teleportEvent.callEvent();
-            stack.getExecutor().teleport(warp.location);
+            teleport((Player) stack.getExecutor(), warp.location);
             stack.getExecutor().sendMessage(getSuccessMessage(group, name));
         } catch (SQLException exception) {
             exception.printStackTrace();
