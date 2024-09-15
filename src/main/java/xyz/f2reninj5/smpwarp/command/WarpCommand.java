@@ -2,6 +2,8 @@ package xyz.f2reninj5.smpwarp.command;
 
 import io.papermc.paper.command.brigadier.BasicCommand;
 import io.papermc.paper.command.brigadier.CommandSourceStack;
+import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.TextComponent;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 import xyz.f2reninj5.smpwarp.event.TeleportEvent;
@@ -13,7 +15,27 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
 
+import static net.kyori.adventure.text.Component.text;
+import static net.kyori.adventure.text.format.NamedTextColor.GOLD;
+import static net.kyori.adventure.text.format.NamedTextColor.RED;
+
 public class WarpCommand implements BasicCommand {
+
+    private Component getSuccessMessage(String warpGroup, String warpName) {
+        TextComponent.Builder builder = text()
+            .content("Warped to ").color(GOLD);
+
+        if (warpGroup != "") {
+            builder
+                .append(text(warpGroup, RED))
+                .append(text(": ", GOLD));
+        }
+
+        return builder
+            .append(text(warpName, RED))
+            .append(text(".", GOLD))
+            .build();
+    }
 
     @Override
     public void execute(@NotNull CommandSourceStack stack, @NotNull String[] args) {
@@ -38,6 +60,7 @@ public class WarpCommand implements BasicCommand {
             TeleportEvent teleportEvent = new TeleportEvent((Player) stack.getExecutor(), stack.getExecutor().getLocation(), warp.location);
             teleportEvent.callEvent();
             stack.getExecutor().teleport(warp.location);
+            stack.getExecutor().sendMessage(getSuccessMessage(group, name));
         } catch (SQLException exception) {
             exception.printStackTrace();
         }
