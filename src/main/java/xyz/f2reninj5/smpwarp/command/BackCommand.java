@@ -15,6 +15,7 @@ import xyz.f2reninj5.smpwarp.persistentDataType.LocationDataType;
 import static net.kyori.adventure.text.Component.text;
 import static net.kyori.adventure.text.format.NamedTextColor.GOLD;
 import static net.kyori.adventure.text.format.NamedTextColor.RED;
+import static xyz.f2reninj5.smpwarp.Teleport.teleport;
 
 public class BackCommand implements BasicCommand {
 
@@ -38,9 +39,7 @@ public class BackCommand implements BasicCommand {
         PersistentDataContainer container = stack.getExecutor().getPersistentDataContainer();
         if (container.has(key, new LocationDataType())) {
             Location destination = container.get(key, new LocationDataType());
-            TeleportEvent teleportEvent = new TeleportEvent((Player) stack.getExecutor(), stack.getExecutor().getLocation(), destination);
-            teleportEvent.callEvent();
-            stack.getExecutor().teleport(destination);
+            teleport((Player) stack.getExecutor(), destination);
             stack.getExecutor().sendMessage(getSuccessMessage());
         } else {
             stack.getExecutor().sendMessage(getFailureMessage());
