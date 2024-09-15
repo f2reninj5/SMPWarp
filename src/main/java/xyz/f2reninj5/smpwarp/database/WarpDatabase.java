@@ -183,4 +183,8 @@ public class WarpDatabase {
             }
         }
     }
+
+    public boolean warpExists(String name) throws SQLException {
+        return warpExists("", name);
+    }
 }
