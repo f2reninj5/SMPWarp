@@ -65,8 +65,7 @@ public class CreateWarpCommand implements BasicCommand {
 
         try {
             if (SMPWarp.getWarpDatabase().warpExists(group, name)) {
-                stack.getExecutor().sendMessage(getSuccessMessage(group, name));
-                return;
+                stack.getExecutor().sendMessage(getFailureMessage(group, name));
             } else {
                 SMPWarp.getWarpDatabase().createWarp(name, group, stack.getLocation(),
                         stack.getExecutor().getUniqueId().toString());
