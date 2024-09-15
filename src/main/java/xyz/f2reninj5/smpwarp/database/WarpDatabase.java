@@ -168,4 +168,19 @@ public class WarpDatabase {
             return names;
         }
     }
+
+    public boolean warpExists(String group, String name) throws SQLException {
+        try (PreparedStatement statement = connection.prepareStatement("""
+            SELECT COUNT(*) FROM warp WHERE `group` = ? AND `name` = ?
+        """)) {
+            statement.setString(1, group);
+            statement.setString(2, name);
+            ResultSet resultSet = statement.executeQuery();
+            if (resultSet.getInt(1) > 0) {
+                return true;
+            } else {
+                return false;
+            }
+        }
+    }
 }
