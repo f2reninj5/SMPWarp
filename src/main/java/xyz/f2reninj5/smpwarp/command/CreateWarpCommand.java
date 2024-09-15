@@ -2,6 +2,8 @@ package xyz.f2reninj5.smpwarp.command;
 
 import io.papermc.paper.command.brigadier.BasicCommand;
 import io.papermc.paper.command.brigadier.CommandSourceStack;
+import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.TextComponent;
 import org.jetbrains.annotations.NotNull;
 import xyz.f2reninj5.smpwarp.SMPWarp;
 
@@ -9,7 +11,27 @@ import java.sql.SQLException;
 import java.util.Collection;
 import java.util.List;
 
+import static net.kyori.adventure.text.Component.text;
+import static net.kyori.adventure.text.format.NamedTextColor.GOLD;
+import static net.kyori.adventure.text.format.NamedTextColor.RED;
+
 public class CreateWarpCommand implements BasicCommand {
+
+    private Component getSuccessMessage(String warpGroup, String warpName) {
+        TextComponent.Builder builder = text()
+            .content("Created warp ").color(GOLD);
+
+        if (warpGroup != "") {
+            builder
+                .append(text(warpGroup, RED))
+                .append(text(": ", GOLD));
+        }
+
+        return builder
+            .append(text(warpName, RED))
+            .append(text(".", GOLD))
+            .build();
+    }
 
     @Override
     public void execute(@NotNull CommandSourceStack stack, @NotNull String[] args) {
@@ -28,6 +50,7 @@ public class CreateWarpCommand implements BasicCommand {
         try {
             SMPWarp.getWarpDatabase().createWarp(name, group, stack.getLocation(),
                     stack.getExecutor().getUniqueId().toString());
+            stack.getExecutor().sendMessage(getSuccessMessage(group, name));
         } catch (SQLException exception) {
             exception.printStackTrace();
         }
