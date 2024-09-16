@@ -11,6 +11,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.World;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.java.JavaPlugin;
+import org.yaml.snakeyaml.error.Mark;
 import xyz.f2reninj5.smpwarp.command.BackCommand;
 import xyz.f2reninj5.smpwarp.command.CreateWarpCommand;
 import xyz.f2reninj5.smpwarp.command.WarpCommand;
@@ -55,7 +56,7 @@ public final class SMPWarp extends JavaPlugin {
 
         getServer().getPluginManager().registerEvents(new TeleportListener(), this);
 
-        BlueMapAPI.getInstance().ifPresent(api -> {
+        BlueMapAPI.onEnable(api -> {
             Map<World, List<Warp>> warps = new HashMap<>();
 
             try {
@@ -69,8 +70,14 @@ public final class SMPWarp extends JavaPlugin {
                 warps.keySet().forEach(w -> {
                     api.getWorld(w).ifPresent(world -> {
                         MarkerSet markerSet = MarkerSet.builder().label("Warps").build();
-                        markerSet.getMarkers().put("id", POIMarker.builder().label(w.getName()).position(0.0, 0.0, 0.0).build());
+//                        markerSet.getMarkers().put("id", POIMarker.builder().label(w.getName()).position(0.0, 0.0, 0.0).build());
 
+                        for (Warp warp : warps.get(w)) {
+                            markerSet.getMarkers().put(warp.group + warp.name,
+                                    POIMarker.builder().label(warp.group + warp.name).position(warp.location.getX(),
+                                            warp.location.getY(), warp.location.getZ()).build());
+                        }
+                        
                         for (BlueMapMap map : world.getMaps()) {
                             map.getMarkerSets().put("someid", markerSet);
                         }
