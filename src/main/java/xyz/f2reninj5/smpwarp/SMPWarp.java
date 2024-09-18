@@ -42,6 +42,8 @@ public final class SMPWarp extends JavaPlugin {
     public void onEnable() {
         plugin = this;
 
+        saveDefaultConfig();
+
         if (!getDataFolder().exists()) {
             getDataFolder().mkdirs();
         }
