@@ -57,9 +57,10 @@ public final class SMPWarp extends JavaPlugin {
 
         getServer().getPluginManager().registerEvents(new TeleportListener(), this);
 
-        BlueMapAPI.onEnable(api -> {
-            BlueMap.onEnable(api);
-        });
+        if (getConfig().getBoolean("enable-bluemap-markers")) {
+            BlueMapAPI.onEnable(BlueMap::onEnable);
+            getLogger().info("BlueMap markers enabled!");
+        }
 
         LifecycleEventManager<Plugin> manager = this.getLifecycleManager();
         manager.registerEventHandler(LifecycleEvents.COMMANDS, event -> {
