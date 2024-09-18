@@ -15,6 +15,14 @@ import java.util.Map;
 
 public class BlueMap {
 
+    public static Map<World, MarkerSet> getMarkerSets() {
+        try {
+            return warpsToMarkerSets(SMPWarp.getWarpDatabase().getAllWarps());
+        } catch (SQLException exception) {
+            throw new RuntimeException(exception);
+        }
+    }
+
     public static void onEnable(BlueMapAPI api) {
         Map<World, List<Warp>> warps = new HashMap<>();
 
