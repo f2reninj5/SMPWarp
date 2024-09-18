@@ -11,7 +11,6 @@ import org.bukkit.Bukkit;
 import org.bukkit.World;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.java.JavaPlugin;
-import org.yaml.snakeyaml.error.Mark;
 import xyz.f2reninj5.smpwarp.command.BackCommand;
 import xyz.f2reninj5.smpwarp.command.CreateWarpCommand;
 import xyz.f2reninj5.smpwarp.command.WarpCommand;
