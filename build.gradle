@@ -22,7 +22,6 @@ repositories {
 
 dependencies {
     compileOnly("io.papermc.paper:paper-api:1.21.1-R0.1-SNAPSHOT")
-    compileOnly("org.yaml:snakeyaml:2.3")
     implementation("org.xerial:sqlite-jdbc:3.46.1.0")
     implementation ("de.bluecolored.bluemap:BlueMapAPI:2.7.2")
 }
