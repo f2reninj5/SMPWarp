@@ -6,6 +6,7 @@ import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.TextComponent;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
+import xyz.f2reninj5.smpwarp.BlueMap;
 import xyz.f2reninj5.smpwarp.SMPWarp;
 import xyz.f2reninj5.smpwarp.model.Warp;
 
@@ -80,7 +81,12 @@ public class RemoveWarpCommand implements BasicCommand {
                 return;
             }
 
-            // remove warp
+            SMPWarp.getWarpDatabase().removeWarp(group, name);
+
+            if (SMPWarp.getPlugin().getConfig().getBoolean("enable-bluemap-markers")) {
+                BlueMap.removeMarker(group, name);
+            }
+
             stack.getExecutor().sendMessage(getSuccessMessage(group, name));
         } catch (SQLException exception) {
             exception.printStackTrace();
