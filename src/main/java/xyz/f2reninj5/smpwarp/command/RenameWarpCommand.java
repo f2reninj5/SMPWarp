@@ -20,20 +20,30 @@ import static xyz.f2reninj5.smpwarp.Teleport.teleport;
 
 public class RenameWarpCommand implements BasicCommand {
 
-    private Component getSuccessMessage(String warpGroup, String warpName) {
+    private Component getSuccessMessage(String warpGroup, String warpName, String newWarpGroup, String newWarpName) {
         TextComponent.Builder builder = text()
-                .content("Warped to ").color(GOLD);
+            .content("Renamed ").color(GOLD);
 
         if (warpGroup != "") {
             builder
-                    .append(text(warpGroup, RED))
-                    .append(text(": ", GOLD));
+                .append(text(warpGroup, RED))
+                .append(text(": ", GOLD));
+        }
+
+        builder
+            .append(text(warpName, RED))
+            .append(text(" to ", GOLD));
+
+        if (newWarpGroup != "") {
+            builder
+                .append(text(warpGroup, RED))
+                .append(text(": ", GOLD));
         }
 
         return builder
-                .append(text(warpName, RED))
-                .append(text(".", GOLD))
-                .build();
+            .append(text(newWarpName, RED))
+            .append(text(".", GOLD))
+            .build();
     }
 
     private Component getFailureMessage(String warpGroup, String warpName) {
