@@ -7,7 +7,9 @@ import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.TextComponent;
 import org.bukkit.Location;
 import org.jetbrains.annotations.NotNull;
+import xyz.f2reninj5.smpwarp.BlueMap;
 import xyz.f2reninj5.smpwarp.SMPWarp;
+import xyz.f2reninj5.smpwarp.model.Warp;
 
 import java.sql.SQLException;
 import java.util.Collection;
@@ -78,15 +80,9 @@ public class CreateWarpCommand implements BasicCommand {
                 SMPWarp.getWarpDatabase().createWarp(name, group, location,
                         stack.getExecutor().getUniqueId().toString());
 
-                String markerName = name;
-                if (group != "") {
-                    markerName = group + " " + name;
+                if (SMPWarp.getPlugin().getConfig().getBoolean("enable-bluemap-markers")) {
+                    BlueMap.addMarker(new Warp(name, group, location, stack.getExecutor().getUniqueId().toString()));
                 }
-
-                POIMarker marker = POIMarker.builder()
-                    .label(markerName)
-                    .position(location.getX(), location.getY(), location.getZ())
-                    .build();
 
                 stack.getExecutor().sendMessage(getSuccessMessage(group, name));
             }
