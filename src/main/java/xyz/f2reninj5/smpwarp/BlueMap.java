@@ -11,12 +11,13 @@ import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 
 public class BlueMap {
 
     public static POIMarker warpToMarker(Warp warp) {
         String label = warp.name;
-        if (warp.group != "") {
+        if (!Objects.equals(warp.group, "")) {
             label = warp.group + " " + label;
         }
 
@@ -51,7 +52,7 @@ public class BlueMap {
                 MarkerSet markerSet = map.getMarkerSets().get("warps");
                 if (markerSet != null) {
                     String label = name;
-                    if (group != "") {
+                    if (!Objects.equals(group, "")) {
                         label = group + " " + label;
                     }
                     markerSet.remove(label);
