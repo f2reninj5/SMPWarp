@@ -4,6 +4,7 @@ import io.papermc.paper.command.brigadier.BasicCommand;
 import io.papermc.paper.command.brigadier.CommandSourceStack;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.TextComponent;
+import org.bukkit.conversations.Prompt;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 import xyz.f2reninj5.smpwarp.SMPWarp;
@@ -67,6 +68,33 @@ public class RenameWarpCommand implements BasicCommand {
                 .content("No warp given.")
                 .color(RED)
                 .build();
+    }
+
+    private static class NewWarpNamePrompt implements Prompt {
+        @Override
+        public String getPromptText(ConversationContext context) {
+            return "Please type the new warp name (type 'cancel' to exit):";
+        }
+
+        @Override
+        public boolean blocksForInput(@NotNull ConversationContext context) {
+            return false;
+        }
+
+        @Override
+        public Prompt acceptInput(ConversationContext context, String input) {
+            assert input != null;
+            String[] args = input.split(" ");
+            String group = "";
+            String name = args[0];
+            if (args.length == 2) {
+                group = name;
+                name = args[1];
+            }
+            context.setSessionData("newWarpGroup", group);
+            context.setSessionData("newWarpName", name);
+            return Prompt.END_OF_CONVERSATION;
+        }
     }
 
     @Override
