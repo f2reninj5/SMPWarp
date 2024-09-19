@@ -63,6 +63,7 @@ public class CreateWarpCommand implements BasicCommand {
     @Override
     public void execute(@NotNull CommandSourceStack stack, @NotNull String[] args) {
         if (args.length < 1) {
+            stack.getSender().sendMessage(getFailureMessage());
             return;
         }
 
