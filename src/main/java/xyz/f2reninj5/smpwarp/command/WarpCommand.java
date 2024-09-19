@@ -38,6 +38,22 @@ public class WarpCommand implements BasicCommand {
             .build();
     }
 
+    private Component getFailureMessage(String warpGroup, String warpName) {
+        TextComponent.Builder builder = text()
+            .content("Warp ").color(RED);
+
+        if (warpGroup != "") {
+            builder
+                .append(text(warpGroup, GOLD))
+                .append(text(": ", RED));
+        }
+
+        return builder
+            .append(text(warpName, GOLD))
+            .append(text(" not found.", RED))
+            .build();
+    }
+
     @Override
     public void execute(@NotNull CommandSourceStack stack, @NotNull String[] args) {
         if (args.length < 1) {
