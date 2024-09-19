@@ -34,7 +34,13 @@ public class BlueMap {
         BlueMapAPI.getInstance().flatMap(api -> api.getWorld(warp.location.getWorld())).ifPresent(mapWorld -> {
             for (BlueMapMap map : mapWorld.getMaps()) {
                 POIMarker marker = warpToMarker(warp);
-                map.getMarkerSets().get("warps").put(marker.getLabel(), marker);
+                Map<String, MarkerSet> markerSets = map.getMarkerSets();
+                MarkerSet markerSet = markerSets.get("warps");
+                if (markerSet == null) {
+                    markerSet = MarkerSet.builder().label("Warps").build();
+                }
+                markerSets.put("warps", markerSet);
+                markerSet.put(marker.getLabel(), marker);
             }
         });
     }
