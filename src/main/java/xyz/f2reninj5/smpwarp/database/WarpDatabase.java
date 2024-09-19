@@ -210,4 +210,14 @@ public class WarpDatabase {
             return warps;
         }
     }
+
+    public void removeWarp(String group, String name) throws SQLException {
+        try (PreparedStatement statement = connection.prepareStatement("""
+            DELETE FROM warp WHERE `group` = ? AND `name` = ?
+        """)) {
+            statement.setString(1, group);
+            statement.setString(2, name);
+            statement.executeUpdate();
+        }
+    }
 }
