@@ -89,7 +89,7 @@ public class RenameWarpCommand implements BasicCommand {
 
         @Override
         public boolean blocksForInput(@NotNull ConversationContext context) {
-            return false;
+            return true;
         }
 
         @Override
