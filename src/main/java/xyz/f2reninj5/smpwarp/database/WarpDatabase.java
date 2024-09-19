@@ -243,4 +243,16 @@ public class WarpDatabase {
             statement.executeUpdate();
         }
     }
+
+    public void renameWarp(String group, String name, String newGroup, String newName) throws SQLException {
+        try (PreparedStatement statement = connection.prepareStatement("""
+            UPDATE warp SET `group` = ?, `name` = ? WHERE `group` = ? AND `name` = ?
+        """)) {
+            statement.setString(1, newGroup);
+            statement.setString(2, newName);
+            statement.setString(3, group);
+            statement.setString(4, newGroup);
+            statement.executeUpdate();
+        }
+    }
 }
