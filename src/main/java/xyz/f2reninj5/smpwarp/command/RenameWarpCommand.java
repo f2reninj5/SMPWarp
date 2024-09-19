@@ -152,7 +152,7 @@ public class RenameWarpCommand implements BasicCommand {
                         }
                         stack.getSender().sendMessage(getSuccessMessage(group, name, newWarpGroup, newWarpName));
                     } else {
-
+                        stack.getSender().sendMessage(getCancelMessage());
                     }
                 });
 
