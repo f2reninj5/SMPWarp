@@ -91,8 +91,10 @@ public class RenameWarpCommand implements BasicCommand {
                 return;
             }
 
-            teleport((Player) stack.getExecutor(), warp.location);
-            stack.getExecutor().sendMessage(getSuccessMessage(group, name));
+            // ask for new name
+            // rename
+            // update bluemap
+            // send success message
         } catch (SQLException exception) {
             exception.printStackTrace();
         }
