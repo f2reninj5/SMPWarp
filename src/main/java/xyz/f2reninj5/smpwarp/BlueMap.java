@@ -30,6 +30,17 @@ public class BlueMap {
             .build();
     }
 
+    public static void addMarker(Warp warp) {
+        BlueMapAPI.getInstance().ifPresent(api ->
+            api.getWorld(warp.location.getWorld()).ifPresent(mapWorld -> {
+                for (BlueMapMap map : mapWorld.getMaps()) {
+                    POIMarker marker = warpToMarker(warp);
+                    map.getMarkerSets().get("warps").put(marker.getLabel(), marker);
+                }
+            })
+        );
+    }
+
     public static Map<World, MarkerSet> warpsToMarkerSets(List<Warp> warps) {
         Map<World, MarkerSet> markerSets = new HashMap<>();
 
