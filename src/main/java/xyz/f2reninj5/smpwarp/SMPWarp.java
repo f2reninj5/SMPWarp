@@ -9,6 +9,7 @@ import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.java.JavaPlugin;
 import xyz.f2reninj5.smpwarp.command.BackCommand;
 import xyz.f2reninj5.smpwarp.command.CreateWarpCommand;
+import xyz.f2reninj5.smpwarp.command.RemoveWarpCommand;
 import xyz.f2reninj5.smpwarp.command.WarpCommand;
 import xyz.f2reninj5.smpwarp.database.WarpDatabase;
 import xyz.f2reninj5.smpwarp.listener.TeleportListener;
@@ -72,6 +73,11 @@ public final class SMPWarp extends JavaPlugin {
                 "back",
                 "teleport back innit",
                 new BackCommand()
+            );
+            commands.register(
+                "removewarp",
+                "removes a warp",
+                new RemoveWarpCommand()
             );
         });
 
