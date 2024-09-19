@@ -75,13 +75,12 @@ public class RemoveWarpCommand implements BasicCommand {
         }
 
         try {
-            Warp warp = SMPWarp.getWarpDatabase().getWarp(name, group);
-            if (warp == null) {
+            if (!SMPWarp.getWarpDatabase().warpExists(group, name)) {
                 stack.getExecutor().sendMessage(getFailureMessage(group, name));
                 return;
             }
 
-            teleport((Player) stack.getExecutor(), warp.location);
+            // remove warp
             stack.getExecutor().sendMessage(getSuccessMessage(group, name));
         } catch (SQLException exception) {
             exception.printStackTrace();
