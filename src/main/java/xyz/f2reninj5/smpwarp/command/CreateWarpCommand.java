@@ -53,8 +53,11 @@ public class CreateWarpCommand implements BasicCommand {
             .build();
     }
 
-    private void createMarker() {
-
+    private Component getFailureMessage() {
+        return text()
+            .content("No warp given.")
+            .color(RED)
+            .build();
     }
 
     @Override
