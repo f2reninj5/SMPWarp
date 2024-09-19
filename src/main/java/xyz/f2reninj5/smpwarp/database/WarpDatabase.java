@@ -220,4 +220,27 @@ public class WarpDatabase {
             statement.executeUpdate();
         }
     }
+
+    public void moveWarp(String group, String name, Location location) throws SQLException {
+        try (PreparedStatement statement = connection.prepareStatement("""
+            UPDATE warp
+            SET x = ?,
+                y = ?,
+                z = ?,
+                yaw = ?,
+                pitch = ?,
+                world = ?
+            WHERE `group` = ? AND `name` = ?
+        """)) {
+            statement.setDouble(1, location.getX());
+            statement.setDouble(2, location.getY());
+            statement.setDouble(3, location.getZ());
+            statement.setFloat(4, location.getYaw());
+            statement.setFloat(5, location.getPitch());
+            statement.setString(6, location.getWorld().getUID().toString());
+            statement.setString(7, group);
+            statement.setString(8, name);
+            statement.executeUpdate();
+        }
+    }
 }
