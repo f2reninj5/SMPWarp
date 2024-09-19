@@ -74,6 +74,13 @@ public class RenameWarpCommand implements BasicCommand {
                 .build();
     }
 
+    private Component getCancelMessage() {
+        return text()
+            .content("Warp rename cancelled.")
+            .color(RED)
+            .build();
+    }
+
     private static class NewWarpNamePrompt implements Prompt {
         @Override
         public String getPromptText(ConversationContext context) {
