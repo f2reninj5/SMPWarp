@@ -1,5 +1,6 @@
 package xyz.f2reninj5.smpwarp.command;
 
+import io.papermc.paper.command.brigadier.BasicCommand;
 import io.papermc.paper.command.brigadier.CommandSourceStack;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.TextComponent;
@@ -17,7 +18,7 @@ import static net.kyori.adventure.text.format.NamedTextColor.GOLD;
 import static net.kyori.adventure.text.format.NamedTextColor.RED;
 import static xyz.f2reninj5.smpwarp.Teleport.teleport;
 
-public class RemoveWarpCommand {
+public class RemoveWarpCommand implements BasicCommand {
 
     private Component getSuccessMessage(String warpGroup, String warpName) {
         TextComponent.Builder builder = text()
