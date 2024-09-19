@@ -39,6 +39,21 @@ public class BlueMap {
         });
     }
 
+    public static void removeMarker(String group, String name) {
+        BlueMapAPI.getInstance().ifPresent(api ->
+            api.getMaps().forEach(map -> {
+                MarkerSet markerSet = map.getMarkerSets().get("warps");
+                if (markerSet != null) {
+                    String label = name;
+                    if (group != "") {
+                        label = group + " " + label;
+                    }
+                    markerSet.remove(label);
+                }
+            })
+        );
+    }
+
     public static Map<World, MarkerSet> warpsToMarkerSets(List<Warp> warps) {
         Map<World, MarkerSet> markerSets = new HashMap<>();
 
