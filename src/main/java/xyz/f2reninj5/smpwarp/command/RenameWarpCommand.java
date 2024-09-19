@@ -118,9 +118,19 @@ public class RenameWarpCommand implements BasicCommand {
                 group = name;
                 name = args[1];
             }
-            context.setSessionData("newWarpGroup", group);
-            context.setSessionData("newWarpName", name);
-            return Prompt.END_OF_CONVERSATION;
+
+            try {
+                if (SMPWarp.getWarpDatabase().warpExists(group, name)) {
+                    context.getForWhom().sendRawMessage("Warp already exists.");
+                    return new NewWarpNamePrompt();
+                }
+
+                context.setSessionData("newWarpGroup", group);
+                context.setSessionData("newWarpName", name);
+                return Prompt.END_OF_CONVERSATION;
+            } catch (SQLException exception) {
+                throw new RuntimeException(exception);
+            }
         }
     }
 
