@@ -74,6 +74,22 @@ public class RenameWarpCommand implements BasicCommand {
                 .build();
     }
 
+    private Component getFailureExistsMessage(String warpGroup, String warpName) {
+        TextComponent.Builder builder = text()
+            .content("Warp ").color(GOLD);
+
+        if (warpGroup != "") {
+            builder
+                .append(text(warpGroup, RED))
+                .append(text(": ", GOLD));
+        }
+
+        return builder
+            .append(text(warpName, RED))
+            .append(text(" already exists.", GOLD))
+            .build();
+    }
+
     private Component getCancelMessage() {
         return text()
             .content("Warp rename cancelled.")
