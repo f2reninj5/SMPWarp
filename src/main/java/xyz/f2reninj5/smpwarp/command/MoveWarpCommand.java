@@ -22,7 +22,7 @@ public class MoveWarpCommand implements BasicCommand {
 
     private Component getSuccessMessage(String warpGroup, String warpName) {
         TextComponent.Builder builder = text()
-            .content("Warped to ").color(GOLD);
+            .content("Moved warp ").color(GOLD);
 
         if (warpGroup != "") {
             builder
@@ -32,7 +32,7 @@ public class MoveWarpCommand implements BasicCommand {
 
         return builder
             .append(text(warpName, RED))
-            .append(text(".", GOLD))
+            .append(text("to your location.", GOLD))
             .build();
     }
 
