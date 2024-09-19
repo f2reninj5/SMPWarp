@@ -41,7 +41,7 @@ public class RenameWarpCommand implements BasicCommand {
 
         if (newWarpGroup != "") {
             builder
-                .append(text(warpGroup, RED))
+                .append(text(newWarpGroup, RED))
                 .append(text(": ", GOLD));
         }
 
