@@ -31,14 +31,12 @@ public class BlueMap {
     }
 
     public static void addMarker(Warp warp) {
-        BlueMapAPI.getInstance().ifPresent(api ->
-            api.getWorld(warp.location.getWorld()).ifPresent(mapWorld -> {
-                for (BlueMapMap map : mapWorld.getMaps()) {
-                    POIMarker marker = warpToMarker(warp);
-                    map.getMarkerSets().get("warps").put(marker.getLabel(), marker);
-                }
-            })
-        );
+        BlueMapAPI.getInstance().flatMap(api -> api.getWorld(warp.location.getWorld())).ifPresent(mapWorld -> {
+            for (BlueMapMap map : mapWorld.getMaps()) {
+                POIMarker marker = warpToMarker(warp);
+                map.getMarkerSets().get("warps").put(marker.getLabel(), marker);
+            }
+        });
     }
 
     public static Map<World, MarkerSet> warpsToMarkerSets(List<Warp> warps) {
