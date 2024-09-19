@@ -79,6 +79,7 @@ public class WarpCommand implements BasicCommand {
         try {
             Warp warp = SMPWarp.getWarpDatabase().getWarp(name, group);
             if (warp == null) {
+                stack.getExecutor().sendMessage(getFailureMessage(group, name));
                 return;
             }
 
