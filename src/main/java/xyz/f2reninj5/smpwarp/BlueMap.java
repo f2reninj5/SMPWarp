@@ -14,6 +14,22 @@ import java.util.Map;
 
 public class BlueMap {
 
+    public static POIMarker warpToMarker(Warp warp) {
+        String label = warp.name;
+        if (warp.group != "") {
+            label = warp.group + " " + label;
+        }
+
+        return POIMarker.builder()
+            .label(label)
+            .position(
+                warp.location.getX(),
+                warp.location.getY(),
+                warp.location.getZ()
+            )
+            .build();
+    }
+
     public static Map<World, MarkerSet> warpsToMarkerSets(List<Warp> warps) {
         Map<World, MarkerSet> markerSets = new HashMap<>();
 
@@ -25,16 +41,8 @@ public class BlueMap {
                 markerSets.put(world, markerSet);
             }
 
-            String label = warp.name;
-            if (warp.group != "") {
-                label = warp.group + " " + label;
-            }
-            POIMarker marker = POIMarker.builder()
-                .label(label)
-                .position(warp.location.getX(), warp.location.getY(), warp.location.getZ())
-                .build();
-
-            markerSets.get(world).put(label, marker);
+            POIMarker marker = warpToMarker(warp);
+            markerSets.get(world).put(marker.getLabel(), marker);
         }
 
         return markerSets;
