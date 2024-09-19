@@ -54,6 +54,13 @@ public class WarpCommand implements BasicCommand {
             .build();
     }
 
+    private Component getFailureMessage() {
+        return text()
+            .content("No warp given.")
+            .color(RED)
+            .build();
+    }
+
     @Override
     public void execute(@NotNull CommandSourceStack stack, @NotNull String[] args) {
         if (args.length < 1) {
