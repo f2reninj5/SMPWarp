@@ -251,7 +251,7 @@ public class WarpDatabase {
             statement.setString(1, newGroup);
             statement.setString(2, newName);
             statement.setString(3, group);
-            statement.setString(4, newGroup);
+            statement.setString(4, name);
             statement.executeUpdate();
         }
     }
