@@ -61,7 +61,8 @@ public class BlueMap {
             api.getWorld(world).ifPresent(mapWorld -> {
                 for (BlueMapMap map : mapWorld.getMaps()) {
                     map.getMarkerSets().put("warps", markerSet);
-            }
-        }));
+                }
+            })
+        );
     }
 }
