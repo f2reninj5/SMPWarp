@@ -22,7 +22,7 @@ public class RemoveWarpCommand implements BasicCommand {
 
     private Component getSuccessMessage(String warpGroup, String warpName) {
         TextComponent.Builder builder = text()
-                .content("Warped to ").color(GOLD);
+                .content("Removed warp ").color(GOLD);
 
         if (warpGroup != "") {
             builder
