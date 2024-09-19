@@ -4,9 +4,13 @@ import io.papermc.paper.command.brigadier.BasicCommand;
 import io.papermc.paper.command.brigadier.CommandSourceStack;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.TextComponent;
+import org.bukkit.conversations.Conversation;
+import org.bukkit.conversations.ConversationContext;
+import org.bukkit.conversations.ConversationFactory;
 import org.bukkit.conversations.Prompt;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
+import xyz.f2reninj5.smpwarp.BlueMap;
 import xyz.f2reninj5.smpwarp.SMPWarp;
 import xyz.f2reninj5.smpwarp.model.Warp;
 
@@ -104,12 +108,15 @@ public class RenameWarpCommand implements BasicCommand {
             return;
         }
 
-        String group = "";
-        String name = args[0];
+        String group;
+        String name;
 
         if (args.length > 1) {
             group = args[0];
             name = args[1];
+        } else {
+            group = "";
+            name = args[0];
         }
 
         try {
@@ -119,10 +126,31 @@ public class RenameWarpCommand implements BasicCommand {
                 return;
             }
 
-            // ask for new name
-            // rename
-            // update bluemap
-            // send success message
+            ConversationFactory conversationFactory = new ConversationFactory(SMPWarp.getPlugin())
+                .withFirstPrompt(new NewWarpNamePrompt())
+                .withEscapeSequence("cancel")
+                .withTimeout(30)
+                .addConversationAbandonedListener(abandonedEvent -> {
+                    if (abandonedEvent.gracefulExit()) {
+                        String newWarpGroup = (String) abandonedEvent.getContext().getSessionData("newWarpGroup");
+                        String newWarpName = (String) abandonedEvent.getContext().getSessionData("newWarpName");
+                        try {
+                            SMPWarp.getWarpDatabase().renameWarp(group, name, newWarpGroup, newWarpName);
+                        } catch (SQLException exception) {
+                            throw new RuntimeException(exception);
+                        }
+                        if (SMPWarp.getPlugin().getConfig().getBoolean("enable-bluemap-markers")) {
+                            BlueMap.removeMarker(group, name);
+                            BlueMap.addMarker(new Warp(newWarpName, newWarpGroup, warp.location, warp.createdBy));
+                        }
+                        stack.getSender().sendMessage(getSuccessMessage(group, name, newWarpGroup, newWarpName));
+                    } else {
+
+                    }
+                });
+
+            Conversation conversation = conversationFactory.buildConversation((Player) stack.getSender());
+            conversation.begin();
         } catch (SQLException exception) {
             exception.printStackTrace();
         }
