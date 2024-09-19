@@ -6,6 +6,7 @@ import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.TextComponent;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
+import xyz.f2reninj5.smpwarp.BlueMap;
 import xyz.f2reninj5.smpwarp.SMPWarp;
 import xyz.f2reninj5.smpwarp.model.Warp;
 
@@ -81,7 +82,12 @@ public class MoveWarpCommand implements BasicCommand {
                 return;
             }
 
-            teleport((Player) stack.getExecutor(), warp.location);
+            if (SMPWarp.getPlugin().getConfig().getBoolean("enable-bluemap-markers")) {
+                BlueMap.removeMarker(group, name);
+                BlueMap.addMarker(new Warp(name, group, stack.getLocation(), stack.getExecutor().getUniqueId().toString()));
+            }
+
+            SMPWarp.getWarpDatabase().moveWarp(group, name, stack.getLocation());
             stack.getExecutor().sendMessage(getSuccessMessage(group, name));
         } catch (SQLException exception) {
             exception.printStackTrace();
