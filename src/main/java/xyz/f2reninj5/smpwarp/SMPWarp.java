@@ -81,6 +81,11 @@ public final class SMPWarp extends JavaPlugin {
                 "moves a warp to current location",
                 new MoveWarpCommand()
             );
+            commands.register(
+                "renamewarp",
+                "rename a warp",
+                new RenameWarpCommand()
+            );
         });
 
     }
