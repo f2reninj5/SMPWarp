@@ -121,7 +121,8 @@ public class RenameWarpCommand implements BasicCommand {
 
             try {
                 if (SMPWarp.getWarpDatabase().warpExists(group, name)) {
-                    context.getForWhom().sendRawMessage("Warp already exists.");
+                    Player forWhom = (Player) context.getForWhom();
+                    forWhom.sendMessage(getFailureExistsMessage(group, name));
                     return new NewWarpNamePrompt();
                 }
 
