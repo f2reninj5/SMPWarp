@@ -74,7 +74,7 @@ public class RenameWarpCommand implements BasicCommand {
                 .build();
     }
 
-    private Component getFailureExistsMessage(String warpGroup, String warpName) {
+    private static Component getFailureExistsMessage(String warpGroup, String warpName) {
         TextComponent.Builder builder = text()
             .content("Warp ").color(GOLD);
 
