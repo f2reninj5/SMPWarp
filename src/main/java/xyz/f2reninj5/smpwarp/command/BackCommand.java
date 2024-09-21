@@ -16,14 +16,14 @@ import static net.kyori.adventure.text.Component.text;
 import static net.kyori.adventure.text.format.NamedTextColor.GOLD;
 import static net.kyori.adventure.text.format.NamedTextColor.RED;
 import static xyz.f2reninj5.smpwarp.Teleport.teleport;
+import static xyz.f2reninj5.smpwarp.common.CommandResponse.getSuccessSerialiser;
 
 public class BackCommand implements BasicCommand {
 
-    private Component getSuccessMessage() {
-        return text()
-            .content("Returned to previous location.")
-            .color(GOLD)
-            .build();
+    private static Component getSuccessResponse() {
+        return getSuccessSerialiser().deserialize(
+            "<primary>Returned to previous location.</primary>"
+        );
     }
 
     private Component getFailureMessage() {
@@ -40,7 +40,7 @@ public class BackCommand implements BasicCommand {
         if (container.has(key, new LocationDataType())) {
             Location destination = container.get(key, new LocationDataType());
             teleport((Player) stack.getExecutor(), destination);
-            stack.getExecutor().sendMessage(getSuccessMessage());
+            stack.getExecutor().sendMessage(getSuccessResponse());
         } else {
             stack.getExecutor().sendMessage(getFailureMessage());
         }
