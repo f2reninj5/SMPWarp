@@ -27,30 +27,16 @@ import static xyz.f2reninj5.smpwarp.common.CommandResponse.*;
 
 public class RenameWarpCommand implements BasicCommand {
 
-    private Component getSuccessMessage(String warpGroup, String warpName, String newWarpGroup, String newWarpName) {
-        TextComponent.Builder builder = text()
-            .content("Renamed ").color(GOLD);
-
-        if (warpGroup != "") {
-            builder
-                .append(text(warpGroup, RED))
-                .append(text(": ", GOLD));
-        }
-
-        builder
-            .append(text(warpName, RED))
-            .append(text(" to ", GOLD));
-
-        if (newWarpGroup != "") {
-            builder
-                .append(text(newWarpGroup, RED))
-                .append(text(": ", GOLD));
-        }
-
-        return builder
-            .append(text(newWarpName, RED))
-            .append(text(".", GOLD))
-            .build();
+    private Component getSuccessResponse(WarpIdentifier oldIdentifier, WarpIdentifier newIdentifier) {
+        return getSuccessSerialiser()
+            .deserialize(
+                "<primary>Renamed warp <warp> to </primary>",
+                identiferToWarpPlaceholder(oldIdentifier)
+            )
+            .append(getSuccessSerialiser().deserialize(
+                "<primary><warp>.</primary>",
+                identiferToWarpPlaceholder(newIdentifier)
+            ));
     }
 
     private Component getCancelResponse() {
@@ -139,7 +125,10 @@ public class RenameWarpCommand implements BasicCommand {
                             BlueMap.removeMarker(group, name);
                             BlueMap.addMarker(new Warp(newWarpName, newWarpGroup, warp.location, warp.createdBy));
                         }
-                        stack.getSender().sendMessage(getSuccessMessage(group, name, newWarpGroup, newWarpName));
+                        stack.getSender().sendMessage(getSuccessResponse(
+                            new WarpIdentifier(group, name),
+                            new WarpIdentifier(newWarpGroup, newWarpName)
+                        ));
                     } else {
                         stack.getSender().sendMessage(getCancelResponse());
                     }
