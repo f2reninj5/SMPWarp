@@ -21,8 +21,23 @@ public class CommandResponse {
                 .build()
         ).build();
 
+    private final static TextColor SUCCESS_PRIMARY_COLOUR = NamedTextColor.GOLD;
+    private final static TextColor SUCCESS_CONTRAST_COLOUR = NamedTextColor.RED;
+
+    private final static MiniMessage SUCCESS_SERIALISER = MiniMessage.builder()
+        .tags(
+            TagResolver.builder()
+                .tag("primary", Tag.styling(SUCCESS_PRIMARY_COLOUR))
+                .tag("contrast", Tag.styling(SUCCESS_CONTRAST_COLOUR))
+                .build()
+        ).build();
+
     public static MiniMessage getErrorSerialiser() {
         return ERROR_SERIALISER;
+    }
+
+    public static MiniMessage getSuccessSerialiser() {
+        return SUCCESS_SERIALISER;
     }
 
     public static Component getWarpNotFoundResponse(@NotNull String group, @NotNull String name) {
