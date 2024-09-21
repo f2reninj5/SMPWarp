@@ -16,6 +16,10 @@ public class WarpIdentifier {
         }
     }
 
+    public static WarpIdentifier stringToWarpIdentifier(@NotNull String string) {
+        return commandArgumentsToWarpIdentifier(string.split(" "));
+    }
+
     public WarpIdentifier(@NotNull String group, @NotNull String name) {
         if (name.isEmpty()) {
             throw new IllegalArgumentException("Name must not be empty");
