@@ -6,7 +6,7 @@ public class WarpIdentifier {
     private final String group;
     private final String name;
 
-    public static WarpIdentifier commandArgumentsToWarpIdentifier(@NotNull String[] arguments) {
+    public static WarpIdentifier commandArgumentsToWarpIdentifier(@NotNull String @NotNull [] arguments) {
         if (arguments.length < 1) {
             throw new IllegalArgumentException("Arguments must contain at least one argument");
         } else if (arguments.length == 1) {
