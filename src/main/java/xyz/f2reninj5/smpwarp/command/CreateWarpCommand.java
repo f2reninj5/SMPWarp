@@ -23,7 +23,7 @@ import static xyz.f2reninj5.smpwarp.common.CommandResponse.identiferToWarpPlaceh
 
 public class CreateWarpCommand implements BasicCommand {
 
-    private Component getSuccessResponse(WarpIdentifier identifier) {
+    private Component getSuccessResponse(@NotNull WarpIdentifier identifier) {
         return getSuccessSerialiser().deserialize(
             "<primary>Created warp <warp>.</primary>",
             identiferToWarpPlaceholder(identifier)
