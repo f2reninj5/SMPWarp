@@ -3,7 +3,6 @@ package xyz.f2reninj5.smpwarp.command;
 import io.papermc.paper.command.brigadier.BasicCommand;
 import io.papermc.paper.command.brigadier.CommandSourceStack;
 import net.kyori.adventure.text.Component;
-import net.kyori.adventure.text.TextComponent;
 import org.bukkit.Location;
 import org.jetbrains.annotations.NotNull;
 import xyz.f2reninj5.smpwarp.BlueMap;
@@ -15,11 +14,7 @@ import java.sql.SQLException;
 import java.util.Collection;
 import java.util.List;
 
-import static net.kyori.adventure.text.Component.text;
-import static net.kyori.adventure.text.format.NamedTextColor.GOLD;
-import static net.kyori.adventure.text.format.NamedTextColor.RED;
-import static xyz.f2reninj5.smpwarp.common.CommandResponse.getSuccessSerialiser;
-import static xyz.f2reninj5.smpwarp.common.CommandResponse.identiferToWarpPlaceholder;
+import static xyz.f2reninj5.smpwarp.common.CommandResponse.*;
 
 public class CreateWarpCommand implements BasicCommand {
 
@@ -30,58 +25,34 @@ public class CreateWarpCommand implements BasicCommand {
         );
     }
 
-    private Component getFailureMessage(String warpGroup, String warpName) {
-        TextComponent.Builder builder = text()
-            .content("Warp ").color(GOLD);
-
-        if (warpGroup != "") {
-            builder
-                .append(text(warpGroup, RED))
-                .append(text(": ", GOLD));
-        }
-
-        return builder
-            .append(text(warpName, RED))
-            .append(text(" already exists.", GOLD))
-            .build();
-    }
-
-    private Component getFailureMessage() {
-        return text()
-            .content("No warp given.")
-            .color(RED)
-            .build();
-    }
-
     @Override
     public void execute(@NotNull CommandSourceStack stack, @NotNull String[] args) {
         if (args.length < 1) {
-            stack.getSender().sendMessage(getFailureMessage());
+            stack.getSender().sendMessage(getNoWarpGivenResponse());
             return;
         }
 
-        String group = "";
-        String name = args[0];
-
-        if (args.length > 1) {
-            group = args[0];
-            name = args[1];
-        }
+        WarpIdentifier identifier = WarpIdentifier.commandArgumentsToWarpIdentifier(args);
 
         try {
-            if (SMPWarp.getWarpDatabase().warpExists(group, name)) {
-                stack.getExecutor().sendMessage(getFailureMessage(group, name));
+            if (SMPWarp.getWarpDatabase().warpExists(identifier.getGroup(), identifier.getName())) {
+                stack.getExecutor().sendMessage(getWarpAlreadyExistsResponse(identifier));
             } else {
                 Location location = stack.getLocation();
 
-                SMPWarp.getWarpDatabase().createWarp(name, group, location,
+                SMPWarp.getWarpDatabase().createWarp(identifier.getName(), identifier.getGroup(), location,
                         stack.getExecutor().getUniqueId().toString());
 
                 if (SMPWarp.getPlugin().getConfig().getBoolean("enable-bluemap-markers")) {
-                    BlueMap.addMarker(new Warp(name, group, location, stack.getExecutor().getUniqueId().toString()));
+                    BlueMap.addMarker(new Warp(
+                        identifier.getName(),
+                        identifier.getGroup(),
+                        location,
+                        stack.getExecutor().getUniqueId().toString()
+                    ));
                 }
 
-                stack.getExecutor().sendMessage(getSuccessResponse(group, name));
+                stack.getExecutor().sendMessage(getSuccessResponse(identifier));
             }
         } catch (SQLException exception) {
             exception.printStackTrace();
