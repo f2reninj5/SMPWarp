@@ -65,4 +65,10 @@ public class CommandResponse {
             identiferToWarpPlaceholder(identifier)
         );
     }
+
+    public static Component getNoWarpGivenResponse() {
+        return getErrorSerialiser().deserialize(
+            "<primary>No warp given.</primary>"
+        );
+    }
 }
