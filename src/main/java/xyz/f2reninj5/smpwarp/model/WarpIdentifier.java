@@ -31,4 +31,8 @@ public class WarpIdentifier {
     public String getName() {
         return name;
     }
+
+    public boolean hasGroup() {
+        return !group.isEmpty();
+    }
 }
