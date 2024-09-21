@@ -30,27 +30,21 @@ public class RemoveWarpCommand implements BasicCommand {
             return;
         }
 
-        String group = "";
-        String name = args[0];
-
-        if (args.length > 1) {
-            group = args[0];
-            name = args[1];
-        }
+        WarpIdentifier identifier = WarpIdentifier.commandArgumentsToWarpIdentifier(args);
 
         try {
-            if (!SMPWarp.getWarpDatabase().warpExists(group, name)) {
-                stack.getExecutor().sendMessage(getWarpNotFoundResponse(new WarpIdentifier(group, name)));
+            if (!SMPWarp.getWarpDatabase().warpExists(identifier.getGroup(), identifier.getName())) {
+                stack.getExecutor().sendMessage(getWarpNotFoundResponse(identifier));
                 return;
             }
 
-            SMPWarp.getWarpDatabase().removeWarp(group, name);
+            SMPWarp.getWarpDatabase().removeWarp(identifier.getGroup(), identifier.getName());
 
             if (SMPWarp.getPlugin().getConfig().getBoolean("enable-bluemap-markers")) {
-                BlueMap.removeMarker(group, name);
+                BlueMap.removeMarker(identifier.getGroup(), identifier.getName());
             }
 
-            stack.getExecutor().sendMessage(getSuccessResponse(new WarpIdentifier(group, name)));
+            stack.getExecutor().sendMessage(getSuccessResponse(identifier));
         } catch (SQLException exception) {
             exception.printStackTrace();
         }
