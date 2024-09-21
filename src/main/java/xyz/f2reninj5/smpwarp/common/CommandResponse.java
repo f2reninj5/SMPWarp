@@ -71,4 +71,11 @@ public class CommandResponse {
             "<primary>No warp given.</primary>"
         );
     }
+
+    public static Component getWarpAlreadyExistsResponse(@NotNull WarpIdentifier identifier) {
+        return getErrorSerialiser().deserialize(
+            "<primary>Warp <warp> already exists.</primary>",
+            identiferToWarpPlaceholder(identifier)
+        );
+    }
 }
