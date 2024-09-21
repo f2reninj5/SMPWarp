@@ -42,7 +42,7 @@ public class RenameWarpCommand implements BasicCommand {
 
     private static class NewWarpNamePrompt implements Prompt {
         @Override
-        public String getPromptText(ConversationContext context) {
+        public String getPromptText(@NotNull ConversationContext context) {
             return "Please type the new warp name (type 'cancel' to exit):";
         }
 
@@ -52,25 +52,17 @@ public class RenameWarpCommand implements BasicCommand {
         }
 
         @Override
-        public Prompt acceptInput(ConversationContext context, String input) {
-            assert input != null;
-            String[] args = input.split(" ");
-            String group = "";
-            String name = args[0];
-            if (args.length == 2) {
-                group = name;
-                name = args[1];
-            }
+        public Prompt acceptInput(@NotNull ConversationContext context, @NotNull String input) {
+            WarpIdentifier identifier = WarpIdentifier.stringToWarpIdentifier(input);
 
             try {
-                if (SMPWarp.getWarpDatabase().warpExists(group, name)) {
+                if (SMPWarp.getWarpDatabase().warpExists(identifier.getGroup(), identifier.getName())) {
                     Player forWhom = (Player) context.getForWhom();
-                    forWhom.sendMessage(getWarpAlreadyExistsResponse(new WarpIdentifier(group, name)));
+                    forWhom.sendMessage(getWarpAlreadyExistsResponse(identifier));
                     return new NewWarpNamePrompt();
                 }
 
-                context.setSessionData("newWarpGroup", group);
-                context.setSessionData("newWarpName", name);
+                context.setSessionData("newWarpIdentifier", identifier);
                 return Prompt.END_OF_CONVERSATION;
             } catch (SQLException exception) {
                 throw new RuntimeException(exception);
@@ -85,21 +77,12 @@ public class RenameWarpCommand implements BasicCommand {
             return;
         }
 
-        String group;
-        String name;
-
-        if (args.length > 1) {
-            group = args[0];
-            name = args[1];
-        } else {
-            group = "";
-            name = args[0];
-        }
+        WarpIdentifier identifer = WarpIdentifier.commandArgumentsToWarpIdentifier(args);
 
         try {
-            Warp warp = SMPWarp.getWarpDatabase().getWarp(name, group);
+            Warp warp = SMPWarp.getWarpDatabase().getWarp(identifer.getName(), identifer.getGroup());
             if (warp == null) {
-                stack.getExecutor().sendMessage(getWarpNotFoundResponse(new WarpIdentifier(group, name)));
+                stack.getExecutor().sendMessage(getWarpNotFoundResponse(identifer));
                 return;
             }
 
@@ -109,21 +92,28 @@ public class RenameWarpCommand implements BasicCommand {
                 .withTimeout(30)
                 .addConversationAbandonedListener(abandonedEvent -> {
                     if (abandonedEvent.gracefulExit()) {
-                        String newWarpGroup = (String) abandonedEvent.getContext().getSessionData("newWarpGroup");
-                        String newWarpName = (String) abandonedEvent.getContext().getSessionData("newWarpName");
+                        WarpIdentifier newIdentifier = (WarpIdentifier) abandonedEvent.getContext()
+                            .getSessionData("newWarpIdentifier");
                         try {
-                            SMPWarp.getWarpDatabase().renameWarp(group, name, newWarpGroup, newWarpName);
+                            SMPWarp.getWarpDatabase().renameWarp(
+                                identifer.getGroup(),
+                                identifer.getName(),
+                                newIdentifier.getGroup(),
+                                newIdentifier.getName()
+                            );
                         } catch (SQLException exception) {
                             throw new RuntimeException(exception);
                         }
                         if (SMPWarp.getPlugin().getConfig().getBoolean("enable-bluemap-markers")) {
-                            BlueMap.removeMarker(group, name);
-                            BlueMap.addMarker(new Warp(newWarpName, newWarpGroup, warp.location, warp.createdBy));
+                            BlueMap.removeMarker(identifer.getGroup(), identifer.getName());
+                            BlueMap.addMarker(new Warp(
+                                newIdentifier.getName(),
+                                newIdentifier.getGroup(),
+                                warp.location,
+                                warp.createdBy
+                            ));
                         }
-                        stack.getSender().sendMessage(getSuccessResponse(
-                            new WarpIdentifier(group, name),
-                            new WarpIdentifier(newWarpGroup, newWarpName)
-                        ));
+                        stack.getSender().sendMessage(getSuccessResponse(identifer, newIdentifier));
                     } else {
                         stack.getSender().sendMessage(getCancelResponse());
                     }
