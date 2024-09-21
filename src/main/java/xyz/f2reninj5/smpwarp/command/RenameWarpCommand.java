@@ -53,11 +53,10 @@ public class RenameWarpCommand implements BasicCommand {
             .build();
     }
 
-    private Component getCancelMessage() {
-        return text()
-            .content("Warp rename cancelled.")
-            .color(RED)
-            .build();
+    private Component getCancelResponse() {
+        return getErrorSerialiser().deserialize(
+            "<primary>Warp rename cancelled.</primary>"
+        );
     }
 
     private static class NewWarpNamePrompt implements Prompt {
@@ -142,7 +141,7 @@ public class RenameWarpCommand implements BasicCommand {
                         }
                         stack.getSender().sendMessage(getSuccessMessage(group, name, newWarpGroup, newWarpName));
                     } else {
-                        stack.getSender().sendMessage(getCancelMessage());
+                        stack.getSender().sendMessage(getCancelResponse());
                     }
                 });
 
