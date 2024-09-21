@@ -11,8 +11,6 @@ import org.jetbrains.annotations.NotNull;
 import xyz.f2reninj5.smpwarp.SMPWarp;
 import xyz.f2reninj5.smpwarp.persistentDataType.LocationDataType;
 
-import static net.kyori.adventure.text.Component.text;
-import static net.kyori.adventure.text.format.NamedTextColor.RED;
 import static xyz.f2reninj5.smpwarp.Teleport.teleport;
 import static xyz.f2reninj5.smpwarp.common.CommandResponse.getErrorSerialiser;
 import static xyz.f2reninj5.smpwarp.common.CommandResponse.getSuccessSerialiser;
