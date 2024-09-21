@@ -17,8 +17,7 @@ import java.util.List;
 import static net.kyori.adventure.text.Component.text;
 import static net.kyori.adventure.text.format.NamedTextColor.GOLD;
 import static net.kyori.adventure.text.format.NamedTextColor.RED;
-import static xyz.f2reninj5.smpwarp.common.CommandResponse.getSuccessSerialiser;
-import static xyz.f2reninj5.smpwarp.common.CommandResponse.identiferToWarpPlaceholder;
+import static xyz.f2reninj5.smpwarp.common.CommandResponse.*;
 
 public class MoveWarpCommand implements BasicCommand {
 
@@ -29,33 +28,10 @@ public class MoveWarpCommand implements BasicCommand {
         );
     }
 
-    private Component getFailureMessage(String warpGroup, String warpName) {
-        TextComponent.Builder builder = text()
-            .content("Warp ").color(RED);
-
-        if (warpGroup != "") {
-            builder
-                .append(text(warpGroup, GOLD))
-                .append(text(": ", RED));
-        }
-
-        return builder
-            .append(text(warpName, GOLD))
-            .append(text(" not found.", RED))
-            .build();
-    }
-
-    private Component getFailureMessage() {
-        return text()
-            .content("No warp given.")
-            .color(RED)
-            .build();
-    }
-
     @Override
     public void execute(@NotNull CommandSourceStack stack, @NotNull String[] args) {
         if (args.length < 1) {
-            stack.getExecutor().sendMessage(getFailureMessage());
+            stack.getExecutor().sendMessage(getNoWarpGivenResponse());
             return;
         }
 
@@ -70,7 +46,7 @@ public class MoveWarpCommand implements BasicCommand {
         try {
             Warp warp = SMPWarp.getWarpDatabase().getWarp(name, group);
             if (warp == null) {
-                stack.getExecutor().sendMessage(getFailureMessage(group, name));
+                stack.getExecutor().sendMessage(getWarpNotFoundResponse(new WarpIdentifier(group, name)));
                 return;
             }
 
