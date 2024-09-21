@@ -13,6 +13,7 @@ import org.jetbrains.annotations.NotNull;
 import xyz.f2reninj5.smpwarp.BlueMap;
 import xyz.f2reninj5.smpwarp.SMPWarp;
 import xyz.f2reninj5.smpwarp.model.Warp;
+import xyz.f2reninj5.smpwarp.model.WarpIdentifier;
 
 import java.sql.SQLException;
 import java.util.Collection;
@@ -22,6 +23,7 @@ import static net.kyori.adventure.text.Component.text;
 import static net.kyori.adventure.text.format.NamedTextColor.GOLD;
 import static net.kyori.adventure.text.format.NamedTextColor.RED;
 import static xyz.f2reninj5.smpwarp.Teleport.teleport;
+import static xyz.f2reninj5.smpwarp.common.CommandResponse.*;
 
 public class RenameWarpCommand implements BasicCommand {
 
@@ -48,45 +50,6 @@ public class RenameWarpCommand implements BasicCommand {
         return builder
             .append(text(newWarpName, RED))
             .append(text(".", GOLD))
-            .build();
-    }
-
-    private Component getFailureMessage(String warpGroup, String warpName) {
-        TextComponent.Builder builder = text()
-                .content("Warp ").color(RED);
-
-        if (warpGroup != "") {
-            builder
-                    .append(text(warpGroup, GOLD))
-                    .append(text(": ", RED));
-        }
-
-        return builder
-                .append(text(warpName, GOLD))
-                .append(text(" not found.", RED))
-                .build();
-    }
-
-    private Component getFailureMessage() {
-        return text()
-                .content("No warp given.")
-                .color(RED)
-                .build();
-    }
-
-    private static Component getFailureExistsMessage(String warpGroup, String warpName) {
-        TextComponent.Builder builder = text()
-            .content("Warp ").color(GOLD);
-
-        if (warpGroup != "") {
-            builder
-                .append(text(warpGroup, RED))
-                .append(text(": ", GOLD));
-        }
-
-        return builder
-            .append(text(warpName, RED))
-            .append(text(" already exists.", GOLD))
             .build();
     }
 
@@ -122,7 +85,7 @@ public class RenameWarpCommand implements BasicCommand {
             try {
                 if (SMPWarp.getWarpDatabase().warpExists(group, name)) {
                     Player forWhom = (Player) context.getForWhom();
-                    forWhom.sendMessage(getFailureExistsMessage(group, name));
+                    forWhom.sendMessage(getWarpAlreadyExistsResponse(new WarpIdentifier(group, name)));
                     return new NewWarpNamePrompt();
                 }
 
@@ -138,7 +101,7 @@ public class RenameWarpCommand implements BasicCommand {
     @Override
     public void execute(@NotNull CommandSourceStack stack, @NotNull String[] args) {
         if (args.length < 1) {
-            stack.getExecutor().sendMessage(getFailureMessage());
+            stack.getExecutor().sendMessage(getNoWarpGivenResponse());
             return;
         }
 
@@ -156,7 +119,7 @@ public class RenameWarpCommand implements BasicCommand {
         try {
             Warp warp = SMPWarp.getWarpDatabase().getWarp(name, group);
             if (warp == null) {
-                stack.getExecutor().sendMessage(getFailureMessage(group, name));
+                stack.getExecutor().sendMessage(getWarpNotFoundResponse(new WarpIdentifier(group, name)));
                 return;
             }
 
