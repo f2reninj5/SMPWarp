@@ -61,9 +61,8 @@ public class CommandResponse {
 
     public static Component getWarpNotFoundResponse(@NotNull WarpIdentifier identifier) {
         return getErrorSerialiser().deserialize(
-        "<primary>Warp <contrast><group></contrast>: <contrast><name></contrast> not found.",
-            Placeholder.component("group", Component.text(group)),
-            Placeholder.component("name", Component.text(name))
+        "<primary>Warp <warp> not found.</primary>",
+            identiferToWarpPlaceholder(identifier)
         );
     }
 }
