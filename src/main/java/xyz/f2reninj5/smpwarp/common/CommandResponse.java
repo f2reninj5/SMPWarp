@@ -8,6 +8,7 @@ import net.kyori.adventure.text.minimessage.tag.Tag;
 import net.kyori.adventure.text.minimessage.tag.resolver.Placeholder;
 import net.kyori.adventure.text.minimessage.tag.resolver.TagResolver;
 import org.jetbrains.annotations.NotNull;
+import xyz.f2reninj5.smpwarp.model.WarpIdentifier;
 
 public class CommandResponse {
     private final static TextColor ERROR_PRIMARY_COLOUR = NamedTextColor.RED;
@@ -40,7 +41,25 @@ public class CommandResponse {
         return SUCCESS_SERIALISER;
     }
 
-    public static Component getWarpNotFoundResponse(@NotNull String group, @NotNull String name) {
+    public static TagResolver identiferToWarpPlaceholder(@NotNull WarpIdentifier identifier) {
+        TagResolver.Builder resolverBuilder = TagResolver.builder()
+            .tag("name", Tag.selfClosingInserting(Component.text(identifier.getName())));
+
+        if (identifier.hasGroup()) {
+            resolverBuilder.tag("group", Tag.selfClosingInserting(Component.text(identifier.getGroup())));
+            resolverBuilder.tag("warp", Tag.preProcessParsed(
+                "<contrast><group></contrast>: <contrast><name></contrast>"
+            ));
+        } else {
+            resolverBuilder.tag("warp", Tag.preProcessParsed(
+                "<contrast><name></contrast>"
+            ));
+        }
+
+        return resolverBuilder.build();
+    }
+
+    public static Component getWarpNotFoundResponse(@NotNull WarpIdentifier identifier) {
         return getErrorSerialiser().deserialize(
         "<primary>Warp <contrast><group></contrast>: <contrast><name></contrast> not found.",
             Placeholder.component("group", Component.text(group)),
