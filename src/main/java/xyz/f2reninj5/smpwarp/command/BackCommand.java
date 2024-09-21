@@ -9,13 +9,12 @@ import org.bukkit.entity.Player;
 import org.bukkit.persistence.PersistentDataContainer;
 import org.jetbrains.annotations.NotNull;
 import xyz.f2reninj5.smpwarp.SMPWarp;
-import xyz.f2reninj5.smpwarp.event.TeleportEvent;
 import xyz.f2reninj5.smpwarp.persistentDataType.LocationDataType;
 
 import static net.kyori.adventure.text.Component.text;
-import static net.kyori.adventure.text.format.NamedTextColor.GOLD;
 import static net.kyori.adventure.text.format.NamedTextColor.RED;
 import static xyz.f2reninj5.smpwarp.Teleport.teleport;
+import static xyz.f2reninj5.smpwarp.common.CommandResponse.getErrorSerialiser;
 import static xyz.f2reninj5.smpwarp.common.CommandResponse.getSuccessSerialiser;
 
 public class BackCommand implements BasicCommand {
@@ -26,11 +25,10 @@ public class BackCommand implements BasicCommand {
         );
     }
 
-    private Component getFailureMessage() {
-        return text()
-            .content("You have no location to return to.")
-            .color(RED)
-            .build();
+    private static Component getNoReturnLocationResponse() {
+        return getErrorSerialiser().deserialize(
+            "<primary>You have no location to return to.</primary>"
+        );
     }
 
     @Override
@@ -42,7 +40,7 @@ public class BackCommand implements BasicCommand {
             teleport((Player) stack.getExecutor(), destination);
             stack.getExecutor().sendMessage(getSuccessResponse());
         } else {
-            stack.getExecutor().sendMessage(getFailureMessage());
+            stack.getExecutor().sendMessage(getNoReturnLocationResponse());
         }
     }
 }
