@@ -27,9 +27,7 @@ public class CommandResponse {
 
     public static Component getWarpNotFoundResponse(@NotNull String group, @NotNull String name) {
         return getErrorSerialiser().deserialize(
-        """
-                <primary>Warp <contrast><group></contrast>: <contrast><name></contrast> not found.
-            """,
+        "<primary>Warp <contrast><group></contrast>: <contrast><name></contrast> not found.",
             Placeholder.component("group", Component.text(group)),
             Placeholder.component("name", Component.text(name))
         );
