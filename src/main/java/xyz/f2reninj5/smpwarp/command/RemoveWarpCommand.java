@@ -35,7 +35,7 @@ public class RemoveWarpCommand implements BasicCommand {
         WarpIdentifier identifier = WarpIdentifier.commandArgumentsToWarpIdentifier(args);
 
         try {
-            if (!SMPWarp.getWarpDatabase().warpExists(identifier.getGroup(), identifier.getName())) {
+            if (!SMPWarp.getWarpDatabase().warpExists(identifier)) {
                 stack.getSender().sendMessage(getWarpNotFoundResponse(identifier));
                 return;
             }

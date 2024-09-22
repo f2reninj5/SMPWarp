@@ -37,7 +37,7 @@ public class CreateWarpCommand implements BasicCommand {
         WarpIdentifier identifier = WarpIdentifier.commandArgumentsToWarpIdentifier(args);
 
         try {
-            if (SMPWarp.getWarpDatabase().warpExists(identifier.getGroup(), identifier.getName())) {
+            if (SMPWarp.getWarpDatabase().warpExists(identifier)) {
                 stack.getSender().sendMessage(getWarpAlreadyExistsResponse(identifier));
             } else {
                 Location location = stack.getLocation();

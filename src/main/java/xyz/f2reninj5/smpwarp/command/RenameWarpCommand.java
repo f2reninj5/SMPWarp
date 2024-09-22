@@ -57,7 +57,7 @@ public class RenameWarpCommand implements BasicCommand {
             WarpIdentifier identifier = WarpIdentifier.stringToWarpIdentifier(input);
 
             try {
-                if (SMPWarp.getWarpDatabase().warpExists(identifier.getGroup(), identifier.getName())) {
+                if (SMPWarp.getWarpDatabase().warpExists(identifier)) {
                     Player forWhom = (Player) context.getForWhom();
                     forWhom.sendMessage(getWarpAlreadyExistsResponse(identifier));
                     return new NewWarpNamePrompt();
