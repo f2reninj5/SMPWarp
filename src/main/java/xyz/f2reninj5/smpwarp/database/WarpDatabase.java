@@ -114,7 +114,7 @@ public class WarpDatabase {
         }
     }
 
-    public List<String> getWarpNames(String group, String filter) throws SQLException {
+    public List<String> getWarpNames(@NotNull String group, @NotNull String filter) throws SQLException {
         try (PreparedStatement statement = connection.prepareStatement("""
             SELECT `name` FROM warp WHERE `group` = ? AND `name` LIKE ?
         """)) {
