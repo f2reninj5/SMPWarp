@@ -22,7 +22,7 @@ public class BlueMap {
     }
 
     public static POIMarker warpToMarker(@NotNull Warp warp) {
-        String label = warp.getIdentifier().join(" ");
+        String label = warpIdentifierToLabel(warp.getIdentifier());
 
         return POIMarker.builder()
             .label(label)
