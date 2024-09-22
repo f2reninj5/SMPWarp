@@ -47,8 +47,8 @@ public class CreateWarpCommand implements BasicCommand {
 
                 if (SMPWarp.getPlugin().getConfig().getBoolean("enable-bluemap-markers")) {
                     BlueMap.addMarker(new Warp(
-                            identifier.getGroup(), identifier.getName(),
-                            location,
+                        identifier,
+                        location,
                         stack.getExecutor().getUniqueId().toString()
                     ));
                 }
