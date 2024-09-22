@@ -114,33 +114,6 @@ public class WarpDatabase {
         }
     }
 
-    public List<String> getWarpNames() throws SQLException {
-        try (Statement statement = connection.createStatement()) {
-            ResultSet resultSet = statement.executeQuery("""
-                SELECT `name` FROM warp
-            """);
-            List<String> names = new ArrayList<String>();
-            while (resultSet.next()) {
-                names.add(resultSet.getString("warp"));
-            }
-            return names;
-        }
-    }
-
-    public List<String> getWarpNames(String filter) throws SQLException {
-        try (PreparedStatement statement = connection.prepareStatement("""
-           SELECT `name` FROM warp WHERE `name` LIKE ?
-        """)) {
-            statement.setString(1, filter + "%");
-            ResultSet resultSet = statement.executeQuery();
-            List<String> names = new ArrayList<>();
-            while (resultSet.next()) {
-                names.add(resultSet.getString("name"));
-            }
-            return names;
-        }
-    }
-
     public List<String> getWarpNames(String group, String filter) throws SQLException {
         try (PreparedStatement statement = connection.prepareStatement("""
             SELECT `name` FROM warp WHERE `group` = ? AND `name` LIKE ?
