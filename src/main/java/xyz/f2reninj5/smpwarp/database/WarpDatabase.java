@@ -87,7 +87,7 @@ public class WarpDatabase {
         }
     }
 
-    public List<String> getWarpGroups() throws SQLException {
+    public List<String> getAllWarpGroups() throws SQLException {
         try (Statement statement = connection.createStatement()) {
             ResultSet resultSet = statement.executeQuery("""
                 SELECT `group` FROM warp WHERE `group` != ""

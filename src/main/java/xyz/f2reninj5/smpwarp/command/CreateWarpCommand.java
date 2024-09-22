@@ -63,7 +63,7 @@ public class CreateWarpCommand implements BasicCommand {
     public @NotNull Collection<String> suggest(@NotNull CommandSourceStack stack, @NotNull String[] args) {
         if (args.length == 0) {
             try {
-                return SMPWarp.getWarpDatabase().getWarpGroups();
+                return SMPWarp.getWarpDatabase().getAllWarpGroups();
             } catch (SQLException e) {
                 throw new RuntimeException(e);
             }

@@ -56,7 +56,7 @@ public class RemoveWarpCommand implements BasicCommand {
     public @NotNull Collection<String> suggest(@NotNull CommandSourceStack stack, @NotNull String[] args) {
         if (args.length == 0) {
             try {
-                List<String> suggestions = SMPWarp.getWarpDatabase().getWarpGroups();
+                List<String> suggestions = SMPWarp.getWarpDatabase().getAllWarpGroups();
                 suggestions.addAll(SMPWarp.getWarpDatabase().getWarpNames("", ""));
                 return suggestions;
             } catch (SQLException e) {
