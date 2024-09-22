@@ -3,6 +3,7 @@ package xyz.f2reninj5.smpwarp.database;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import xyz.f2reninj5.smpwarp.model.Warp;
+import xyz.f2reninj5.smpwarp.model.WarpIdentifier;
 
 import java.sql.*;
 import java.util.ArrayList;
@@ -38,30 +39,13 @@ public class WarpDatabase {
         }
     }
 
-    public void createWarp(String name, String group, Location location, String createdBy) throws SQLException {
+    public void createWarp(WarpIdentifier identifier, Location location, String createdBy) throws SQLException {
         try (PreparedStatement statement = connection.prepareStatement("""
             INSERT INTO warp (`name`, `group`, `world`, `x`, `y`, `z`, `yaw`, `pitch`, `created_by`)
             VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
         """)) {
-            statement.setString(1, name);
-            statement.setString(2, group);
-            statement.setString(3, location.getWorld().getUID().toString());
-            statement.setDouble(4, location.getX());
-            statement.setDouble(5, location.getY());
-            statement.setDouble(6, location.getZ());
-            statement.setDouble(7, location.getYaw());
-            statement.setDouble(8, location.getPitch());
-            statement.setString(9, createdBy);
-            statement.executeUpdate();
-        }
-    }
-
-    public void createWarp(String name, Location location, String createdBy) throws SQLException {
-        try (PreparedStatement statement = connection.prepareStatement("""
-            INSERT INTO warp (`name`, `world`, `x`, `y`, `z`, `yaw`, `pitch`, `created_by`)
-            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
-        """)) {
-            statement.setString(1, name);
+            statement.setString(1, identifier.getName());
+            statement.setString(2, identifier.getGroup());
             statement.setString(3, location.getWorld().getUID().toString());
             statement.setDouble(4, location.getX());
             statement.setDouble(5, location.getY());
