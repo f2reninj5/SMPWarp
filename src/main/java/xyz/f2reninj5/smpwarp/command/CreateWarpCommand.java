@@ -4,6 +4,8 @@ import io.papermc.paper.command.brigadier.BasicCommand;
 import io.papermc.paper.command.brigadier.CommandSourceStack;
 import net.kyori.adventure.text.Component;
 import org.bukkit.Location;
+import org.bukkit.command.CommandSender;
+import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 import xyz.f2reninj5.smpwarp.BlueMap;
 import xyz.f2reninj5.smpwarp.SMPWarp;
@@ -75,5 +77,10 @@ public class CreateWarpCommand implements BasicCommand {
             }
         }
         return List.of();
+    }
+
+    @Override
+    public boolean canUse(@NotNull CommandSender sender) {
+        return sender instanceof Player;
     }
 }
