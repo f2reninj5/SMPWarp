@@ -29,7 +29,7 @@ public class BlueMap {
             .build();
     }
 
-    public static void addMarker(Warp warp) {
+    public static void addMarker(@NotNull Warp warp) {
         BlueMapAPI.getInstance().flatMap(api -> api.getWorld(warp.getLocation().getWorld())).ifPresent(mapWorld -> {
             for (BlueMapMap map : mapWorld.getMaps()) {
                 POIMarker marker = warpToMarker(warp);
