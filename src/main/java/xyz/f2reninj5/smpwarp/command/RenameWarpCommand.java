@@ -74,7 +74,7 @@ public class RenameWarpCommand implements BasicCommand {
     @Override
     public void execute(@NotNull CommandSourceStack stack, @NotNull String[] args) {
         if (args.length < 1) {
-            stack.getExecutor().sendMessage(getNoWarpGivenResponse());
+            stack.getSender().sendMessage(getNoWarpGivenResponse());
             return;
         }
 
@@ -83,7 +83,7 @@ public class RenameWarpCommand implements BasicCommand {
         try {
             Warp warp = SMPWarp.getWarpDatabase().getWarp(identifer.getName(), identifer.getGroup());
             if (warp == null) {
-                stack.getExecutor().sendMessage(getWarpNotFoundResponse(identifer));
+                stack.getSender().sendMessage(getWarpNotFoundResponse(identifer));
                 return;
             }
 
