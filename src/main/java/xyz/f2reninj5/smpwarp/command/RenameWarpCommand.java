@@ -3,6 +3,7 @@ package xyz.f2reninj5.smpwarp.command;
 import io.papermc.paper.command.brigadier.BasicCommand;
 import io.papermc.paper.command.brigadier.CommandSourceStack;
 import net.kyori.adventure.text.Component;
+import org.bukkit.command.CommandSender;
 import org.bukkit.conversations.Conversation;
 import org.bukkit.conversations.ConversationContext;
 import org.bukkit.conversations.ConversationFactory;
@@ -152,5 +153,10 @@ public class RenameWarpCommand implements BasicCommand {
             }
         }
         return List.of();
+    }
+
+    @Override
+    public boolean canUse(@NotNull CommandSender sender) {
+        return sender instanceof Player;
     }
 }
