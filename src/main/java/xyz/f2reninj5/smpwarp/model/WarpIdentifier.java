@@ -39,4 +39,8 @@ public class WarpIdentifier {
     public boolean hasGroup() {
         return !group.isEmpty();
     }
+
+    public String join(@NotNull String separator) {
+        return group + separator + name;
+    }
 }
