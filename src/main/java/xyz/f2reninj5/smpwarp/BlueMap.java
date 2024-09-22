@@ -7,6 +7,7 @@ import de.bluecolored.bluemap.api.markers.POIMarker;
 import org.bukkit.World;
 import org.jetbrains.annotations.NotNull;
 import xyz.f2reninj5.smpwarp.model.Warp;
+import xyz.f2reninj5.smpwarp.model.WarpIdentifier;
 
 import java.sql.SQLException;
 import java.util.HashMap;
@@ -15,6 +16,10 @@ import java.util.Map;
 import java.util.Objects;
 
 public class BlueMap {
+
+    private static String warpIdentifierToLabel(@NotNull WarpIdentifier identifier) {
+        return identifier.join(" ");
+    }
 
     public static POIMarker warpToMarker(@NotNull Warp warp) {
         String label = warp.getIdentifier().join(" ");
