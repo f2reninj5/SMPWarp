@@ -3,24 +3,26 @@ package xyz.f2reninj5.smpwarp.model;
 import org.bukkit.Location;
 
 public class Warp {
-    private String name;
-    private String group;
+    private WarpIdentifier identifier;
     private Location location;
     private String createdBy;
 
     public Warp(String name, String group, Location location, String createdBy) {
-        this.name = name;
-        this.group = group;
+        this.identifier = new WarpIdentifier(group, name);
         this.location = location;
         this.createdBy = createdBy;
     }
 
-    public String getName() {
-        return name;
+    public WarpIdentifier getIdentifier() {
+        return identifier;
     }
 
     public String getGroup() {
-        return group;
+        return identifier.getGroup();
+    }
+
+    public String getName() {
+        return identifier.getName();
     }
 
     public Location getLocation() {
