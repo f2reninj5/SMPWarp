@@ -11,7 +11,7 @@ import xyz.f2reninj5.smpwarp.model.WarpIdentifier;
 
 public class CommandResponse {
     private final static TextColor ERROR_PRIMARY_COLOUR = NamedTextColor.RED;
-    private final static TextColor ERROR_CONTRAST_COLOUR = NamedTextColor.GOLD;
+    private final static TextColor ERROR_CONTRAST_COLOUR = NamedTextColor.DARK_RED;
 
     private final static MiniMessage ERROR_SERIALISER = MiniMessage.builder()
         .tags(
@@ -21,8 +21,8 @@ public class CommandResponse {
                 .build()
         ).build();
 
-    private final static TextColor SUCCESS_PRIMARY_COLOUR = NamedTextColor.GOLD;
-    private final static TextColor SUCCESS_CONTRAST_COLOUR = NamedTextColor.RED;
+    private final static TextColor SUCCESS_PRIMARY_COLOUR = NamedTextColor.GREEN;
+    private final static TextColor SUCCESS_CONTRAST_COLOUR = NamedTextColor.DARK_GREEN;
 
     private final static MiniMessage SUCCESS_SERIALISER = MiniMessage.builder()
         .tags(
@@ -61,7 +61,7 @@ public class CommandResponse {
     public static Component getWarpNotFoundResponse(@NotNull WarpIdentifier identifier) {
         return getErrorSerialiser().deserialize(
         "<primary>Warp <warp> not found.</primary>",
-            identiferToWarpPlaceholder(identifier)
+            identifierToWarpPlaceholder(identifier)
         );
     }
 
@@ -74,7 +74,7 @@ public class CommandResponse {
     public static Component getWarpAlreadyExistsResponse(@NotNull WarpIdentifier identifier) {
         return getErrorSerialiser().deserialize(
             "<primary>Warp <warp> already exists.</primary>",
-            identiferToWarpPlaceholder(identifier)
+            identifierToWarpPlaceholder(identifier)
         );
     }
 }
