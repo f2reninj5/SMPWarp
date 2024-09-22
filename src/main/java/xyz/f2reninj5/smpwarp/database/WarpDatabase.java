@@ -144,10 +144,6 @@ public class WarpDatabase {
         }
     }
 
-    public boolean warpExists(String name) throws SQLException {
-        return warpExists("", name);
-    }
-
     public List<Warp> getAllWarps() throws SQLException {
         try (Statement statement = connection.createStatement()) {
             ResultSet resultSet = statement.executeQuery("SELECT * FROM warp");
