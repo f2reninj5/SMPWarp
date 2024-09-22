@@ -38,7 +38,7 @@ public class CreateWarpCommand implements BasicCommand {
 
         try {
             if (SMPWarp.getWarpDatabase().warpExists(identifier.getGroup(), identifier.getName())) {
-                stack.getExecutor().sendMessage(getWarpAlreadyExistsResponse(identifier));
+                stack.getSender().sendMessage(getWarpAlreadyExistsResponse(identifier));
             } else {
                 Location location = stack.getLocation();
 
@@ -54,7 +54,7 @@ public class CreateWarpCommand implements BasicCommand {
                     ));
                 }
 
-                stack.getExecutor().sendMessage(getSuccessResponse(identifier));
+                stack.getSender().sendMessage(getSuccessResponse(identifier));
             }
         } catch (SQLException exception) {
             exception.printStackTrace();
