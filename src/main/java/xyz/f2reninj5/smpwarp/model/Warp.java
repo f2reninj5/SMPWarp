@@ -7,10 +7,14 @@ public class Warp {
     private Location location;
     private String createdBy;
 
-    public Warp(String group, String name, Location location, String createdBy) {
-        this.identifier = new WarpIdentifier(group, name);
+    public Warp(WarpIdentifier identifier, Location location, String createdBy) {
+        this.identifier = identifier;
         this.location = location;
         this.createdBy = createdBy;
+    }
+
+    public Warp(String group, String name, Location location, String createdBy) {
+        this(new WarpIdentifier(group, name), location, createdBy);
     }
 
     public WarpIdentifier getIdentifier() {
