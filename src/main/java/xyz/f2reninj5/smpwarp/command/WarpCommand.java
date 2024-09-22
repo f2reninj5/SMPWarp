@@ -20,24 +20,15 @@ import static net.kyori.adventure.text.Component.text;
 import static net.kyori.adventure.text.format.NamedTextColor.GOLD;
 import static net.kyori.adventure.text.format.NamedTextColor.RED;
 import static xyz.f2reninj5.smpwarp.Teleport.teleport;
+import static xyz.f2reninj5.smpwarp.common.CommandResponse.getSuccessSerialiser;
 import static xyz.f2reninj5.smpwarp.common.CommandResponse.getWarpNotFoundResponse;
 
 public class WarpCommand implements BasicCommand {
 
-    private Component getSuccessMessage(String warpGroup, String warpName) {
-        TextComponent.Builder builder = text()
-            .content("Warped to ").color(GOLD);
-
-        if (warpGroup != "") {
-            builder
-                .append(text(warpGroup, RED))
-                .append(text(": ", GOLD));
-        }
-
-        return builder
-            .append(text(warpName, RED))
-            .append(text(".", GOLD))
-            .build();
+    private Component getSuccessResponse(WarpIdentifier identifier) {
+        return getSuccessSerialiser().deserialize(
+            "<primary>Warped to <warp>.</primary>"
+        );
     }
 
     private Component getFailureMessage(String warpGroup, String warpName) {
@@ -86,7 +77,7 @@ public class WarpCommand implements BasicCommand {
             }
 
             teleport((Player) stack.getExecutor(), warp.location);
-            stack.getExecutor().sendMessage(getSuccessMessage(group, name));
+            stack.getExecutor().sendMessage(getSuccessResponse(new WarpIdentifier(group, name)));
         } catch (SQLException exception) {
             exception.printStackTrace();
         }
