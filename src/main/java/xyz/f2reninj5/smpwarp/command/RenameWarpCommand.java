@@ -111,7 +111,7 @@ public class RenameWarpCommand implements BasicCommand {
                                 newIdentifier.getName(),
                                 newIdentifier.getGroup(),
                                 warp.getLocation(),
-                                warp.createdBy
+                                warp.getCreatedBy()
                             ));
                         }
                         stack.getSender().sendMessage(getSuccessResponse(identifer, newIdentifier));

@@ -6,7 +6,7 @@ public class Warp {
     private String name;
     private String group;
     private Location location;
-    public String createdBy;
+    private String createdBy;
 
     public Warp(String name, String group, Location location, String createdBy) {
         this.name = name;
@@ -25,5 +25,9 @@ public class Warp {
 
     public Location getLocation() {
         return location;
+    }
+
+    public String getCreatedBy() {
+        return createdBy;
     }
 }
