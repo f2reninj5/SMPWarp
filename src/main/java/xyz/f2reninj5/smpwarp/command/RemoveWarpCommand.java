@@ -43,7 +43,7 @@ public class RemoveWarpCommand implements BasicCommand {
             SMPWarp.getWarpDatabase().removeWarp(identifier.getGroup(), identifier.getName());
 
             if (SMPWarp.getPlugin().getConfig().getBoolean("enable-bluemap-markers")) {
-                BlueMap.removeMarker(identifier.getGroup(), identifier.getName());
+                BlueMap.removeMarker(identifier);
             }
 
             stack.getSender().sendMessage(getSuccessResponse(identifier));

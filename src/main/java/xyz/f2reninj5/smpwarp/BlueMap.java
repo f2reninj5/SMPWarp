@@ -49,15 +49,12 @@ public class BlueMap {
         });
     }
 
-    public static void removeMarker(String group, String name) {
+    public static void removeMarker(@NotNull WarpIdentifier identifier) {
         BlueMapAPI.getInstance().ifPresent(api ->
             api.getMaps().forEach(map -> {
                 MarkerSet markerSet = map.getMarkerSets().get("warps");
                 if (markerSet != null) {
-                    String label = name;
-                    if (!Objects.equals(group, "")) {
-                        label = group + " " + label;
-                    }
+                    String label = warpIdentifierToLabel(identifier);
                     markerSet.remove(label);
                 }
             })
