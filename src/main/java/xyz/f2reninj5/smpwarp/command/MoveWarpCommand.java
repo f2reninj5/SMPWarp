@@ -36,7 +36,7 @@ public class MoveWarpCommand implements BasicCommand {
         WarpIdentifier identifier = WarpIdentifier.commandArgumentsToWarpIdentifier(args);
 
         try {
-            Warp warp = SMPWarp.getWarpDatabase().getWarp(identifier.getName(), identifier.getGroup());
+            Warp warp = SMPWarp.getWarpDatabase().getWarp(identifier);
             if (warp == null) {
                 stack.getSender().sendMessage(getWarpNotFoundResponse(identifier));
                 return;

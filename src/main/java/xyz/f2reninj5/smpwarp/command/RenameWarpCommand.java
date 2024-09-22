@@ -81,7 +81,7 @@ public class RenameWarpCommand implements BasicCommand {
         WarpIdentifier identifer = WarpIdentifier.commandArgumentsToWarpIdentifier(args);
 
         try {
-            Warp warp = SMPWarp.getWarpDatabase().getWarp(identifer.getName(), identifer.getGroup());
+            Warp warp = SMPWarp.getWarpDatabase().getWarp(identifer);
             if (warp == null) {
                 stack.getSender().sendMessage(getWarpNotFoundResponse(identifer));
                 return;

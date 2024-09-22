@@ -58,17 +58,19 @@ public class WarpDatabase {
         }
     }
 
-    public Warp getWarp(String name, String group) throws SQLException {
+    public Warp getWarp(@NotNull WarpIdentifier identifier) throws SQLException {
         try (PreparedStatement statement = connection.prepareStatement("""
             SELECT * FROM warp WHERE `name` = ? AND `group` = ?
         """)) {
-            statement.setString(1, name);
-            statement.setString(2, group);
+            statement.setString(1, identifier.getName());
+            statement.setString(2, identifier.getGroup());
             ResultSet resultSet = statement.executeQuery();
             if (resultSet.next()) {
                 return new Warp(
-                    resultSet.getString("group"),
-                    resultSet.getString("name"),
+                    new WarpIdentifier(
+                        resultSet.getString("group"),
+                        resultSet.getString("name")
+                    ),
                     new Location(
                         Bukkit.getWorld(UUID.fromString(resultSet.getString("world"))),
                         resultSet.getDouble("x"),
