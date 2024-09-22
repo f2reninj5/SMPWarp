@@ -5,6 +5,7 @@ import io.papermc.paper.command.brigadier.CommandSourceStack;
 import net.kyori.adventure.text.Component;
 import org.bukkit.Location;
 import org.bukkit.NamespacedKey;
+import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.persistence.PersistentDataContainer;
 import org.jetbrains.annotations.NotNull;
@@ -40,5 +41,10 @@ public class BackCommand implements BasicCommand {
         } else {
             stack.getExecutor().sendMessage(getNoReturnLocationResponse());
         }
+    }
+
+    @Override
+    public boolean canUse(@NotNull CommandSender sender) {
+        return sender instanceof Player;
     }
 }
