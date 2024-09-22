@@ -37,23 +37,17 @@ public class WarpCommand implements BasicCommand {
             return;
         }
 
-        String group = "";
-        String name = args[0];
-
-        if (args.length > 1) {
-            group = args[0];
-            name = args[1];
-        }
+        WarpIdentifier identifier = WarpIdentifier.commandArgumentsToWarpIdentifier(args);
 
         try {
-            Warp warp = SMPWarp.getWarpDatabase().getWarp(name, group);
+            Warp warp = SMPWarp.getWarpDatabase().getWarp(identifier.getName(), identifier.getGroup());
             if (warp == null) {
-                stack.getExecutor().sendMessage(getWarpNotFoundResponse(new WarpIdentifier(group, name)));
+                stack.getExecutor().sendMessage(getWarpNotFoundResponse(identifier));
                 return;
             }
 
             teleport((Player) stack.getExecutor(), warp.location);
-            stack.getExecutor().sendMessage(getSuccessResponse(new WarpIdentifier(group, name)));
+            stack.getExecutor().sendMessage(getSuccessResponse(identifier));
         } catch (SQLException exception) {
             exception.printStackTrace();
         }
