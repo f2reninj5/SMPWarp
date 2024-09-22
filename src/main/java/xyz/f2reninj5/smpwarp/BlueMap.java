@@ -5,6 +5,7 @@ import de.bluecolored.bluemap.api.BlueMapMap;
 import de.bluecolored.bluemap.api.markers.MarkerSet;
 import de.bluecolored.bluemap.api.markers.POIMarker;
 import org.bukkit.World;
+import org.jetbrains.annotations.NotNull;
 import xyz.f2reninj5.smpwarp.model.Warp;
 
 import java.sql.SQLException;
@@ -15,11 +16,8 @@ import java.util.Objects;
 
 public class BlueMap {
 
-    public static POIMarker warpToMarker(Warp warp) {
-        String label = warp.getName();
-        if (!Objects.equals(warp.getGroup(), "")) {
-            label = warp.getGroup() + " " + label;
-        }
+    public static POIMarker warpToMarker(@NotNull Warp warp) {
+        String label = warp.getIdentifier().join(" ");
 
         return POIMarker.builder()
             .label(label)
