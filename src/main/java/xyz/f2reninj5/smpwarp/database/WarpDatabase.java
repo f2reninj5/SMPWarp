@@ -2,6 +2,7 @@ package xyz.f2reninj5.smpwarp.database;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
+import org.jetbrains.annotations.NotNull;
 import xyz.f2reninj5.smpwarp.model.Warp;
 import xyz.f2reninj5.smpwarp.model.WarpIdentifier;
 
@@ -14,7 +15,7 @@ public class WarpDatabase {
 
     private final Connection connection;
 
-    public WarpDatabase(String path) throws SQLException {
+    public WarpDatabase(@NotNull String path) throws SQLException {
         connection = DriverManager.getConnection("jdbc:sqlite:" + path);
         try (Statement statement = connection.createStatement()) {
             statement.execute("""
