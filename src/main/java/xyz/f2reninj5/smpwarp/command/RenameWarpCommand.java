@@ -35,7 +35,7 @@ public class RenameWarpCommand implements BasicCommand {
             ));
     }
 
-    private Component getCancelResponse() {
+    private static Component getCancelResponse() {
         return getErrorSerialiser().deserialize(
             "<primary>Warp rename cancelled.</primary>"
         );
