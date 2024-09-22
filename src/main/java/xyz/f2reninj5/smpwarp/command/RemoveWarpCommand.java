@@ -28,7 +28,7 @@ public class RemoveWarpCommand implements BasicCommand {
     @Override
     public void execute(@NotNull CommandSourceStack stack, @NotNull String[] args) {
         if (args.length < 1) {
-            stack.getExecutor().sendMessage(getNoWarpGivenResponse());
+            stack.getSender().sendMessage(getNoWarpGivenResponse());
             return;
         }
 
@@ -36,7 +36,7 @@ public class RemoveWarpCommand implements BasicCommand {
 
         try {
             if (!SMPWarp.getWarpDatabase().warpExists(identifier.getGroup(), identifier.getName())) {
-                stack.getExecutor().sendMessage(getWarpNotFoundResponse(identifier));
+                stack.getSender().sendMessage(getWarpNotFoundResponse(identifier));
                 return;
             }
 
@@ -46,7 +46,7 @@ public class RemoveWarpCommand implements BasicCommand {
                 BlueMap.removeMarker(identifier.getGroup(), identifier.getName());
             }
 
-            stack.getExecutor().sendMessage(getSuccessResponse(identifier));
+            stack.getSender().sendMessage(getSuccessResponse(identifier));
         } catch (SQLException exception) {
             exception.printStackTrace();
         }
