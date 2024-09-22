@@ -82,8 +82,8 @@ public class WarpDatabase {
             ResultSet resultSet = statement.executeQuery();
             if (resultSet.next()) {
                 return new Warp(
-                    resultSet.getString("name"),
                     resultSet.getString("group"),
+                    resultSet.getString("name"),
                     new Location(
                         Bukkit.getWorld(UUID.fromString(resultSet.getString("world"))),
                         resultSet.getDouble("x"),
@@ -194,9 +194,8 @@ public class WarpDatabase {
             List<Warp> warps = new ArrayList<>();
             while (resultSet.next()) {
                 warps.add(new Warp(
-                    resultSet.getString("name"),
-                    resultSet.getString("group"),
-                    new Location(
+                        resultSet.getString("group"), resultSet.getString("name"),
+                        new Location(
                         Bukkit.getWorld(UUID.fromString(resultSet.getString("world"))),
                         resultSet.getDouble("x"),
                         resultSet.getDouble("y"),

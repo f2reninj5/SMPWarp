@@ -45,8 +45,8 @@ public class MoveWarpCommand implements BasicCommand {
             if (SMPWarp.getPlugin().getConfig().getBoolean("enable-bluemap-markers")) {
                 BlueMap.removeMarker(identifier.getGroup(), identifier.getName());
                 BlueMap.addMarker(new Warp(
-                    identifier.getName(),
                     identifier.getGroup(),
+                    identifier.getName(),
                     stack.getLocation(),
                     stack.getExecutor().getUniqueId().toString()
                 ));
