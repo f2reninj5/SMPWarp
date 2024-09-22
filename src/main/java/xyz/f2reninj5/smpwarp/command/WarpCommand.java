@@ -42,7 +42,7 @@ public class WarpCommand implements BasicCommand {
                 return;
             }
 
-            teleport((Player) stack.getExecutor(), warp.location);
+            teleport((Player) stack.getExecutor(), warp.getLocation());
             stack.getSender().sendMessage(getSuccessResponse(identifier));
         } catch (SQLException exception) {
             exception.printStackTrace();

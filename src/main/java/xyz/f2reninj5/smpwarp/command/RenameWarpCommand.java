@@ -110,7 +110,7 @@ public class RenameWarpCommand implements BasicCommand {
                             BlueMap.addMarker(new Warp(
                                 newIdentifier.getName(),
                                 newIdentifier.getGroup(),
-                                warp.location,
+                                warp.getLocation(),
                                 warp.createdBy
                             ));
                         }

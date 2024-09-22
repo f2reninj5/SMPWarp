@@ -5,7 +5,7 @@ import org.bukkit.Location;
 public class Warp {
     private String name;
     private String group;
-    public Location location;
+    private Location location;
     public String createdBy;
 
     public Warp(String name, String group, Location location, String createdBy) {
@@ -21,5 +21,9 @@ public class Warp {
 
     public String getGroup() {
         return group;
+    }
+
+    public Location getLocation() {
+        return location;
     }
 }

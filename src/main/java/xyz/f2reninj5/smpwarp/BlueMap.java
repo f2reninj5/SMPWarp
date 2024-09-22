@@ -24,15 +24,15 @@ public class BlueMap {
         return POIMarker.builder()
             .label(label)
             .position(
-                warp.location.getX(),
-                warp.location.getY(),
-                warp.location.getZ()
+                warp.getLocation().getX(),
+                warp.getLocation().getY(),
+                warp.getLocation().getZ()
             )
             .build();
     }
 
     public static void addMarker(Warp warp) {
-        BlueMapAPI.getInstance().flatMap(api -> api.getWorld(warp.location.getWorld())).ifPresent(mapWorld -> {
+        BlueMapAPI.getInstance().flatMap(api -> api.getWorld(warp.getLocation().getWorld())).ifPresent(mapWorld -> {
             for (BlueMapMap map : mapWorld.getMaps()) {
                 POIMarker marker = warpToMarker(warp);
                 Map<String, MarkerSet> markerSets = map.getMarkerSets();
@@ -65,7 +65,7 @@ public class BlueMap {
         Map<World, MarkerSet> markerSets = new HashMap<>();
 
         for (Warp warp : warps) {
-            final World world = warp.location.getWorld();
+            final World world = warp.getLocation().getWorld();
 
             if (!markerSets.containsKey(world)) {
                 MarkerSet markerSet = MarkerSet.builder().label("Warps").build();
