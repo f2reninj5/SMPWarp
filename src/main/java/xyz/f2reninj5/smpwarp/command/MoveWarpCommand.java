@@ -19,7 +19,7 @@ import static xyz.f2reninj5.smpwarp.common.CommandResponse.*;
 
 public class MoveWarpCommand implements BasicCommand {
 
-    private Component getSuccessResponse(WarpIdentifier identifier) {
+    private static Component getSuccessResponse(WarpIdentifier identifier) {
         return getSuccessSerialiser().deserialize(
             "<primary>Moved warp <warp> to your location.</primary>",
             identifierToWarpPlaceholder(identifier)
