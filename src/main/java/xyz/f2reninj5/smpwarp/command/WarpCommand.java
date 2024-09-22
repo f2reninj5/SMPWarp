@@ -3,22 +3,16 @@ package xyz.f2reninj5.smpwarp.command;
 import io.papermc.paper.command.brigadier.BasicCommand;
 import io.papermc.paper.command.brigadier.CommandSourceStack;
 import net.kyori.adventure.text.Component;
-import net.kyori.adventure.text.TextComponent;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
-import xyz.f2reninj5.smpwarp.event.TeleportEvent;
 import xyz.f2reninj5.smpwarp.model.Warp;
 import xyz.f2reninj5.smpwarp.SMPWarp;
 import xyz.f2reninj5.smpwarp.model.WarpIdentifier;
 
 import java.sql.SQLException;
-import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
 
-import static net.kyori.adventure.text.Component.text;
-import static net.kyori.adventure.text.format.NamedTextColor.GOLD;
-import static net.kyori.adventure.text.format.NamedTextColor.RED;
 import static xyz.f2reninj5.smpwarp.Teleport.teleport;
 import static xyz.f2reninj5.smpwarp.common.CommandResponse.*;
 
