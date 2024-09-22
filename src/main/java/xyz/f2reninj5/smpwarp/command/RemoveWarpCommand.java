@@ -19,7 +19,7 @@ public class RemoveWarpCommand implements BasicCommand {
     private Component getSuccessResponse(WarpIdentifier identifier) {
         return getSuccessSerialiser().deserialize(
             "<primary>Removed warp <warp>.</primary>",
-            identiferToWarpPlaceholder(identifier)
+            identifierToWarpPlaceholder(identifier)
         );
     }
 

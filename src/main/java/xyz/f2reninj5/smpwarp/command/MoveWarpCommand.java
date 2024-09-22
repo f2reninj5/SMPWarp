@@ -20,7 +20,7 @@ public class MoveWarpCommand implements BasicCommand {
     private Component getSuccessResponse(WarpIdentifier identifier) {
         return getSuccessSerialiser().deserialize(
             "<primary>Moved warp <warp> to your location.</primary>",
-            identiferToWarpPlaceholder(identifier)
+            identifierToWarpPlaceholder(identifier)
         );
     }
 

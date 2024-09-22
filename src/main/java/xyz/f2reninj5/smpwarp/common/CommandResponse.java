@@ -5,7 +5,6 @@ import net.kyori.adventure.text.format.NamedTextColor;
 import net.kyori.adventure.text.format.TextColor;
 import net.kyori.adventure.text.minimessage.MiniMessage;
 import net.kyori.adventure.text.minimessage.tag.Tag;
-import net.kyori.adventure.text.minimessage.tag.resolver.Placeholder;
 import net.kyori.adventure.text.minimessage.tag.resolver.TagResolver;
 import org.jetbrains.annotations.NotNull;
 import xyz.f2reninj5.smpwarp.model.WarpIdentifier;
@@ -41,7 +40,7 @@ public class CommandResponse {
         return SUCCESS_SERIALISER;
     }
 
-    public static TagResolver identiferToWarpPlaceholder(@NotNull WarpIdentifier identifier) {
+    public static TagResolver identifierToWarpPlaceholder(@NotNull WarpIdentifier identifier) {
         TagResolver.Builder resolverBuilder = TagResolver.builder()
             .tag("name", Tag.selfClosingInserting(Component.text(identifier.getName())));
 

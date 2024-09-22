@@ -21,7 +21,7 @@ public class CreateWarpCommand implements BasicCommand {
     private Component getSuccessResponse(@NotNull WarpIdentifier identifier) {
         return getSuccessSerialiser().deserialize(
             "<primary>Created warp <warp>.</primary>",
-            identiferToWarpPlaceholder(identifier)
+            identifierToWarpPlaceholder(identifier)
         );
     }
 

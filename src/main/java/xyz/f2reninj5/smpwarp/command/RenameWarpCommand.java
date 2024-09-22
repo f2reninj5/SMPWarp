@@ -26,11 +26,11 @@ public class RenameWarpCommand implements BasicCommand {
         return getSuccessSerialiser()
             .deserialize(
                 "<primary>Renamed warp <warp> to </primary>",
-                identiferToWarpPlaceholder(oldIdentifier)
+                identifierToWarpPlaceholder(oldIdentifier)
             )
             .append(getSuccessSerialiser().deserialize(
                 "<primary><warp>.</primary>",
-                identiferToWarpPlaceholder(newIdentifier)
+                identifierToWarpPlaceholder(newIdentifier)
             ));
     }
 
