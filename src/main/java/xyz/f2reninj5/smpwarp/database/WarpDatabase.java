@@ -92,7 +92,7 @@ public class WarpDatabase {
             ResultSet resultSet = statement.executeQuery("""
                 SELECT `group` FROM warp WHERE `group` != ""
             """);
-            List<String> groups = new ArrayList<String>();
+            List<String> groups = new ArrayList<>();
             while (resultSet.next()) {
                 groups.add(resultSet.getString("group"));
             }
