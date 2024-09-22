@@ -150,8 +150,11 @@ public class WarpDatabase {
             List<Warp> warps = new ArrayList<>();
             while (resultSet.next()) {
                 warps.add(new Warp(
-                        resultSet.getString("group"), resultSet.getString("name"),
-                        new Location(
+                    new WarpIdentifier(
+                        resultSet.getString("group"),
+                        resultSet.getString("name")
+                    ),
+                    new Location(
                         Bukkit.getWorld(UUID.fromString(resultSet.getString("world"))),
                         resultSet.getDouble("x"),
                         resultSet.getDouble("y"),
