@@ -23,7 +23,7 @@ import static xyz.f2reninj5.smpwarp.common.CommandResponse.*;
 
 public class RenameWarpCommand implements BasicCommand {
 
-    private Component getSuccessResponse(WarpIdentifier oldIdentifier, WarpIdentifier newIdentifier) {
+    private static Component getSuccessResponse(WarpIdentifier oldIdentifier, WarpIdentifier newIdentifier) {
         return getSuccessSerialiser()
             .deserialize(
                 "<primary>Renamed warp <warp> to </primary>",
