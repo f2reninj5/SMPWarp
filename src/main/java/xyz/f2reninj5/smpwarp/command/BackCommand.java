@@ -37,9 +37,9 @@ public class BackCommand implements BasicCommand {
         if (container.has(key, new LocationDataType())) {
             Location destination = container.get(key, new LocationDataType());
             teleport((Player) stack.getExecutor(), destination);
-            stack.getExecutor().sendMessage(getSuccessResponse());
+            stack.getSender().sendMessage(getSuccessResponse());
         } else {
-            stack.getExecutor().sendMessage(getNoReturnLocationResponse());
+            stack.getSender().sendMessage(getNoReturnLocationResponse());
         }
     }
 
