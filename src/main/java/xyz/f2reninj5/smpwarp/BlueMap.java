@@ -17,8 +17,8 @@ public class BlueMap {
 
     public static POIMarker warpToMarker(Warp warp) {
         String label = warp.getName();
-        if (!Objects.equals(warp.group, "")) {
-            label = warp.group + " " + label;
+        if (!Objects.equals(warp.getGroup(), "")) {
+            label = warp.getGroup() + " " + label;
         }
 
         return POIMarker.builder()
