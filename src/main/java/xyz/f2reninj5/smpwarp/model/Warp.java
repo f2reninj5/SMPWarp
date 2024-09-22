@@ -3,7 +3,7 @@ package xyz.f2reninj5.smpwarp.model;
 import org.bukkit.Location;
 
 public class Warp {
-    public String name;
+    private String name;
     public String group;
     public Location location;
     public String createdBy;
@@ -13,5 +13,9 @@ public class Warp {
         this.group = group;
         this.location = location;
         this.createdBy = createdBy;
+    }
+
+    public String getName() {
+        return name;
     }
 }
