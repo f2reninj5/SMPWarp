@@ -108,8 +108,7 @@ public class RenameWarpCommand implements BasicCommand {
                         if (SMPWarp.getPlugin().getConfig().getBoolean("enable-bluemap-markers")) {
                             BlueMap.removeMarker(identifer);
                             BlueMap.addMarker(new Warp(
-                                newIdentifier.getGroup(),
-                                newIdentifier.getName(),
+                                newIdentifier,
                                 warp.getLocation(),
                                 warp.getCreatedBy()
                             ));
