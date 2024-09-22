@@ -100,7 +100,7 @@ public class WarpDatabase {
         }
     }
 
-    public List<String> getWarpGroups(String filter) throws SQLException {
+    public List<String> getWarpGroups(@NotNull String filter) throws SQLException {
         try (PreparedStatement statement = connection.prepareStatement("""
            SELECT `group` FROM warp WHERE `group` LIKE ? AND `group` != ""
         """)) {
