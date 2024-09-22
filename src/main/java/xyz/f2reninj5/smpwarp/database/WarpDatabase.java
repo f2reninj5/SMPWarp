@@ -40,7 +40,7 @@ public class WarpDatabase {
         }
     }
 
-    public void createWarp(WarpIdentifier identifier, Location location, String createdBy) throws SQLException {
+    public void createWarp(@NotNull WarpIdentifier identifier, @NotNull Location location, @NotNull String createdBy) throws SQLException {
         try (PreparedStatement statement = connection.prepareStatement("""
             INSERT INTO warp (`name`, `group`, `world`, `x`, `y`, `z`, `yaw`, `pitch`, `created_by`)
             VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
