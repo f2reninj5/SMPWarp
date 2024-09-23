@@ -86,16 +86,16 @@ public class WarpDatabase {
     }
 
     public List<String> getAllWarpGroups() throws SQLException {
-        try (Statement statement = connection.createStatement()) {
-            ResultSet resultSet = statement.executeQuery("""
-                SELECT `group` FROM warp WHERE `group` != ""
-            """);
-            List<String> groups = new ArrayList<>();
-            while (resultSet.next()) {
-                groups.add(resultSet.getString("group"));
-            }
-            return groups;
+        ResultSet resultSet = connection.createStatement().executeQuery("""
+            SELECT `group` FROM warp WHERE `group` != ""
+        """);
+
+        List<String> groups = new ArrayList<>();
+
+        while (resultSet.next()) {
+            groups.add(resultSet.getString("group"));
         }
+        return groups;
     }
 
     public List<String> getWarpGroups(@NotNull String filter) throws SQLException {
