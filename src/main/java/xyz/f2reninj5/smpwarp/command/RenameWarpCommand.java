@@ -96,12 +96,7 @@ public class RenameWarpCommand implements BasicCommand {
                         WarpIdentifier newIdentifier = (WarpIdentifier) abandonedEvent.getContext()
                             .getSessionData("newWarpIdentifier");
                         try {
-                            SMPWarp.getWarpDatabase().renameWarp(
-                                identifer.getGroup(),
-                                identifer.getName(),
-                                newIdentifier.getGroup(),
-                                newIdentifier.getName()
-                            );
+                            SMPWarp.getWarpDatabase().renameWarp(identifer, newIdentifier);
                         } catch (SQLException exception) {
                             throw new RuntimeException(exception);
                         }
