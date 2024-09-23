@@ -3,6 +3,7 @@ package xyz.f2reninj5.smpwarp.command;
 import io.papermc.paper.command.brigadier.BasicCommand;
 import io.papermc.paper.command.brigadier.CommandSourceStack;
 import net.kyori.adventure.text.Component;
+import org.bukkit.Location;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
@@ -15,6 +16,7 @@ import java.util.Collection;
 import java.util.List;
 
 import static xyz.f2reninj5.smpwarp.Teleport.teleport;
+import static xyz.f2reninj5.smpwarp.common.Command.handleDatabaseError;
 import static xyz.f2reninj5.smpwarp.common.CommandResponse.*;
 
 public class WarpCommand implements BasicCommand {
@@ -28,25 +30,32 @@ public class WarpCommand implements BasicCommand {
 
     @Override
     public void execute(@NotNull CommandSourceStack stack, @NotNull String[] args) {
+        final CommandSender sender = stack.getSender();
+        final Player player = (Player) stack.getExecutor();
+        assert player != null;
+
         if (args.length < 1) {
-            stack.getSender().sendMessage(getNoWarpGivenResponse());
+            sender.sendMessage(getNoWarpGivenResponse());
             return;
         }
 
         WarpIdentifier identifier = WarpIdentifier.commandArgumentsToWarpIdentifier(args);
+        Warp warp;
 
         try {
-            Warp warp = SMPWarp.getWarpDatabase().getWarp(identifier);
-            if (warp == null) {
-                stack.getSender().sendMessage(getWarpNotFoundResponse(identifier));
-                return;
-            }
-
-            teleport((Player) stack.getExecutor(), warp.getLocation());
-            stack.getSender().sendMessage(getSuccessResponse(identifier));
+            warp = SMPWarp.getWarpDatabase().getWarp(identifier);
         } catch (SQLException exception) {
-            exception.printStackTrace();
+            handleDatabaseError(player, exception);
+            return;
         }
+
+        if (warp == null) {
+            sender.sendMessage(getWarpNotFoundResponse(identifier));
+            return;
+        }
+
+        teleport(player, warp.getLocation());
+        sender.sendMessage(getSuccessResponse(identifier));
     }
 
     @Override
