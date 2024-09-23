@@ -114,18 +114,19 @@ public class WarpDatabase {
     }
 
     public List<String> getWarpNames(@NotNull String group, @NotNull String filter) throws SQLException {
-        try (PreparedStatement statement = connection.prepareStatement("""
+        PreparedStatement statement = connection.prepareStatement("""
             SELECT `name` FROM warp WHERE `group` = ? AND `name` LIKE ?
-        """)) {
-            statement.setString(1, group);
-            statement.setString(2, filter + "%");
-            ResultSet resultSet = statement.executeQuery();
-            List<String> names = new ArrayList<>();
-            while (resultSet.next()) {
-                names.add(resultSet.getString("name"));
-            }
-            return names;
+        """);
+        statement.setString(1, group);
+        statement.setString(2, filter + "%");
+        ResultSet resultSet = statement.executeQuery();
+
+        List<String> names = new ArrayList<>();
+
+        while (resultSet.next()) {
+            names.add(resultSet.getString("name"));
         }
+        return names;
     }
 
     public boolean warpExists(@NotNull WarpIdentifier identifier) throws SQLException {
