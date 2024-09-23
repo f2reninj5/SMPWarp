@@ -60,10 +60,10 @@ public class WarpDatabase {
 
     public Warp getWarp(@NotNull WarpIdentifier identifier) throws SQLException {
         try (PreparedStatement statement = connection.prepareStatement("""
-            SELECT * FROM warp WHERE `name` = ? AND `group` = ?
+            SELECT * FROM warp WHERE `group` = ? AND `name` = ?
         """)) {
-            statement.setString(1, identifier.getName());
             statement.setString(2, identifier.getGroup());
+            statement.setString(1, identifier.getName());
             ResultSet resultSet = statement.executeQuery();
             if (resultSet.next()) {
                 return new Warp(
