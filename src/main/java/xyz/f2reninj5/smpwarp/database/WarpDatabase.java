@@ -2,6 +2,7 @@ package xyz.f2reninj5.smpwarp.database;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
+import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 import xyz.f2reninj5.smpwarp.model.Warp;
 import xyz.f2reninj5.smpwarp.model.WarpIdentifier;
@@ -38,22 +39,21 @@ public class WarpDatabase {
         }
     }
 
-    public void createWarp(@NotNull WarpIdentifier identifier, @NotNull Location location, @NotNull String createdBy) throws SQLException {
-        try (PreparedStatement statement = connection.prepareStatement("""
+    public void createWarp(@NotNull WarpIdentifier identifier, @NotNull Location location, @NotNull Player createdBy) throws SQLException {
+        PreparedStatement statement = connection.prepareStatement("""
             INSERT INTO warp (`group`, `name`, `world`, `x`, `y`, `z`, `yaw`, `pitch`, `created_by`)
             VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
-        """)) {
-            statement.setString(1, identifier.getGroup());
-            statement.setString(2, identifier.getName());
-            statement.setString(3, location.getWorld().getUID().toString());
-            statement.setDouble(4, location.getX());
-            statement.setDouble(5, location.getY());
-            statement.setDouble(6, location.getZ());
-            statement.setDouble(7, location.getYaw());
-            statement.setDouble(8, location.getPitch());
-            statement.setString(9, createdBy);
-            statement.executeUpdate();
-        }
+        """);
+        statement.setString(1, identifier.getGroup());
+        statement.setString(2, identifier.getName());
+        statement.setString(3, location.getWorld().getUID().toString());
+        statement.setDouble(4, location.getX());
+        statement.setDouble(5, location.getY());
+        statement.setDouble(6, location.getZ());
+        statement.setDouble(7, location.getYaw());
+        statement.setDouble(8, location.getPitch());
+        statement.setString(9, createdBy.getUniqueId().toString());
+        statement.executeUpdate();
     }
 
     public Warp getWarp(@NotNull WarpIdentifier identifier) throws SQLException {
