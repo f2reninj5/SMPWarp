@@ -17,8 +17,7 @@ public class WarpDatabase {
 
     public WarpDatabase(@NotNull String path) throws SQLException {
         connection = DriverManager.getConnection("jdbc:sqlite:" + path);
-        try (Statement statement = connection.createStatement()) {
-            statement.execute("""
+        connection.createStatement().execute("""
             CREATE TABLE IF NOT EXISTS warp (`name` TEXT NOT NULL,
                 `group` TEXT DEFAULT "" NOT NULL,
                 `world` TEXT NOT NULL,
@@ -30,8 +29,7 @@ public class WarpDatabase {
                 `created_by` TEXT NOT NULL,
                 PRIMARY KEY (`name`, `group`)
             )
-            """);
-        }
+        """);
     }
 
     public void closeConnection() throws SQLException {
