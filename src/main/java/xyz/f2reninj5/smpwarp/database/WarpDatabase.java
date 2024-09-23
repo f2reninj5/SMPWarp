@@ -130,18 +130,14 @@ public class WarpDatabase {
     }
 
     public boolean warpExists(@NotNull WarpIdentifier identifier) throws SQLException {
-        try (PreparedStatement statement = connection.prepareStatement("""
+        PreparedStatement statement = connection.prepareStatement("""
             SELECT COUNT(*) FROM warp WHERE `group` = ? AND `name` = ?
-        """)) {
-            statement.setString(1, identifier.getGroup());
-            statement.setString(2, identifier.getName());
-            ResultSet resultSet = statement.executeQuery();
-            if (resultSet.getInt(1) > 0) {
-                return true;
-            } else {
-                return false;
-            }
-        }
+        """);
+        statement.setString(1, identifier.getGroup());
+        statement.setString(2, identifier.getName());
+        ResultSet resultSet = statement.executeQuery();
+
+        return resultSet.getInt(1) > 0;
     }
 
     public List<Warp> getAllWarps() throws SQLException {
