@@ -42,11 +42,11 @@ public class WarpDatabase {
 
     public void createWarp(@NotNull WarpIdentifier identifier, @NotNull Location location, @NotNull String createdBy) throws SQLException {
         try (PreparedStatement statement = connection.prepareStatement("""
-            INSERT INTO warp (`name`, `group`, `world`, `x`, `y`, `z`, `yaw`, `pitch`, `created_by`)
+            INSERT INTO warp (`group`, `name`, `world`, `x`, `y`, `z`, `yaw`, `pitch`, `created_by`)
             VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
         """)) {
-            statement.setString(1, identifier.getName());
             statement.setString(2, identifier.getGroup());
+            statement.setString(1, identifier.getName());
             statement.setString(3, location.getWorld().getUID().toString());
             statement.setDouble(4, location.getX());
             statement.setDouble(5, location.getY());
