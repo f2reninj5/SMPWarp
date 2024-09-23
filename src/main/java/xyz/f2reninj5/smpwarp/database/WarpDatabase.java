@@ -57,31 +57,31 @@ public class WarpDatabase {
     }
 
     public Warp getWarp(@NotNull WarpIdentifier identifier) throws SQLException {
-        try (PreparedStatement statement = connection.prepareStatement("""
+        PreparedStatement statement = connection.prepareStatement("""
             SELECT * FROM warp WHERE `group` = ? AND `name` = ?
-        """)) {
-            statement.setString(1, identifier.getGroup());
-            statement.setString(2, identifier.getName());
-            ResultSet resultSet = statement.executeQuery();
-            if (resultSet.next()) {
-                return new Warp(
-                    new WarpIdentifier(
-                        resultSet.getString("group"),
-                        resultSet.getString("name")
-                    ),
-                    new Location(
-                        Bukkit.getWorld(UUID.fromString(resultSet.getString("world"))),
-                        resultSet.getDouble("x"),
-                        resultSet.getDouble("y"),
-                        resultSet.getDouble("z"),
-                        resultSet.getFloat("yaw"),
-                        resultSet.getFloat("pitch")
-                    ),
-                    Bukkit.getPlayer(UUID.fromString(resultSet.getString("created_by")))
-                );
-            } else {
-                return null;
-            }
+        """);
+        statement.setString(1, identifier.getGroup());
+        statement.setString(2, identifier.getName());
+        ResultSet resultSet = statement.executeQuery();
+
+        if (resultSet.next()) {
+            return new Warp(
+                new WarpIdentifier(
+                    resultSet.getString("group"),
+                    resultSet.getString("name")
+                ),
+                new Location(
+                    Bukkit.getWorld(UUID.fromString(resultSet.getString("world"))),
+                    resultSet.getDouble("x"),
+                    resultSet.getDouble("y"),
+                    resultSet.getDouble("z"),
+                    resultSet.getFloat("yaw"),
+                    resultSet.getFloat("pitch")
+                ),
+                Bukkit.getPlayer(UUID.fromString(resultSet.getString("created_by")))
+            );
+        } else {
+            return null;
         }
     }
 
