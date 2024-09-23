@@ -3,6 +3,7 @@ package xyz.f2reninj5.smpwarp.command;
 import io.papermc.paper.command.brigadier.BasicCommand;
 import io.papermc.paper.command.brigadier.CommandSourceStack;
 import net.kyori.adventure.text.Component;
+import org.bukkit.Location;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
@@ -15,6 +16,7 @@ import java.sql.SQLException;
 import java.util.Collection;
 import java.util.List;
 
+import static xyz.f2reninj5.smpwarp.common.Command.handleDatabaseError;
 import static xyz.f2reninj5.smpwarp.common.CommandResponse.*;
 
 public class MoveWarpCommand implements BasicCommand {
@@ -28,34 +30,48 @@ public class MoveWarpCommand implements BasicCommand {
 
     @Override
     public void execute(@NotNull CommandSourceStack stack, @NotNull String[] args) {
+        final CommandSender sender = stack.getSender();
+        final Player player = (Player) stack.getExecutor();
+        final Location location = stack.getLocation();
+        assert player != null;
+
         if (args.length < 1) {
-            stack.getSender().sendMessage(getNoWarpGivenResponse());
+            sender.sendMessage(getNoWarpGivenResponse());
             return;
         }
 
         WarpIdentifier identifier = WarpIdentifier.commandArgumentsToWarpIdentifier(args);
+        Warp warp;
 
         try {
-            Warp warp = SMPWarp.getWarpDatabase().getWarp(identifier);
-            if (warp == null) {
-                stack.getSender().sendMessage(getWarpNotFoundResponse(identifier));
-                return;
-            }
-
-            if (SMPWarp.getPlugin().getConfig().getBoolean("enable-bluemap-markers")) {
-                BlueMap.removeMarker(identifier);
-                BlueMap.addMarker(new Warp(
-                    identifier,
-                    stack.getLocation(),
-                    (Player) stack.getExecutor()
-                ));
-            }
-
-            SMPWarp.getWarpDatabase().moveWarp(identifier, stack.getLocation());
-            stack.getSender().sendMessage(getSuccessResponse(identifier));
+            warp = SMPWarp.getWarpDatabase().getWarp(identifier);
         } catch (SQLException exception) {
-            exception.printStackTrace();
+            handleDatabaseError(player, exception);
+            return;
         }
+        
+        if (warp == null) {
+            sender.sendMessage(getWarpNotFoundResponse(identifier));
+            return;
+        }
+
+        if (SMPWarp.getPlugin().getConfig().getBoolean("enable-bluemap-markers")) {
+            BlueMap.removeMarker(identifier);
+            BlueMap.addMarker(new Warp(
+                identifier,
+                location,
+                player
+            ));
+        }
+
+        try {
+            SMPWarp.getWarpDatabase().moveWarp(identifier, location);
+        } catch (SQLException exception) {
+            handleDatabaseError(player, exception);
+            return;
+        }
+
+        sender.sendMessage(getSuccessResponse(identifier));
     }
 
     @Override
