@@ -3,6 +3,7 @@ package xyz.f2reninj5.smpwarp.command;
 import io.papermc.paper.command.brigadier.BasicCommand;
 import io.papermc.paper.command.brigadier.CommandSourceStack;
 import net.kyori.adventure.text.Component;
+import org.bukkit.Location;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
@@ -14,6 +15,7 @@ import java.sql.SQLException;
 import java.util.Collection;
 import java.util.List;
 
+import static xyz.f2reninj5.smpwarp.common.Command.handleDatabaseError;
 import static xyz.f2reninj5.smpwarp.common.CommandResponse.*;
 
 public class RemoveWarpCommand implements BasicCommand {
@@ -27,8 +29,12 @@ public class RemoveWarpCommand implements BasicCommand {
 
     @Override
     public void execute(@NotNull CommandSourceStack stack, @NotNull String[] args) {
+        final CommandSender sender = stack.getSender();
+        final Player player = (Player) stack.getExecutor();
+        assert player != null;
+
         if (args.length < 1) {
-            stack.getSender().sendMessage(getNoWarpGivenResponse());
+            sender.sendMessage(getNoWarpGivenResponse());
             return;
         }
 
@@ -36,20 +42,26 @@ public class RemoveWarpCommand implements BasicCommand {
 
         try {
             if (!SMPWarp.getWarpDatabase().warpExists(identifier)) {
-                stack.getSender().sendMessage(getWarpNotFoundResponse(identifier));
+                sender.sendMessage(getWarpNotFoundResponse(identifier));
                 return;
             }
-
-            SMPWarp.getWarpDatabase().removeWarp(identifier);
-
-            if (SMPWarp.getPlugin().getConfig().getBoolean("enable-bluemap-markers")) {
-                BlueMap.removeMarker(identifier);
-            }
-
-            stack.getSender().sendMessage(getSuccessResponse(identifier));
         } catch (SQLException exception) {
-            exception.printStackTrace();
+            handleDatabaseError(player, exception);
+            return;
         }
+
+        try {
+            SMPWarp.getWarpDatabase().removeWarp(identifier);
+        } catch (SQLException exception) {
+            handleDatabaseError(player, exception);
+            return;
+        }
+
+        if (SMPWarp.getPlugin().getConfig().getBoolean("enable-bluemap-markers")) {
+            BlueMap.removeMarker(identifier);
+        }
+
+        sender.sendMessage(getSuccessResponse(identifier));
     }
 
     @Override
