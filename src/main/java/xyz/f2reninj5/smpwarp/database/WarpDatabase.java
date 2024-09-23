@@ -99,17 +99,18 @@ public class WarpDatabase {
     }
 
     public List<String> getWarpGroups(@NotNull String filter) throws SQLException {
-        try (PreparedStatement statement = connection.prepareStatement("""
+        PreparedStatement statement = connection.prepareStatement("""
            SELECT `group` FROM warp WHERE `group` LIKE ? AND `group` != ""
-        """)) {
-            statement.setString(1, filter + "%");
-            ResultSet resultSet = statement.executeQuery();
-            List<String> groups = new ArrayList<>();
-            while (resultSet.next()) {
-                groups.add(resultSet.getString("group"));
-            }
-            return groups;
+        """);
+        statement.setString(1, filter + "%");
+        ResultSet resultSet = statement.executeQuery();
+
+        List<String> groups = new ArrayList<>();
+
+        while (resultSet.next()) {
+            groups.add(resultSet.getString("group"));
         }
+        return groups;
     }
 
     public List<String> getWarpNames(@NotNull String group, @NotNull String filter) throws SQLException {
