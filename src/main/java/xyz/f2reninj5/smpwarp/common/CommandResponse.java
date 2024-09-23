@@ -77,4 +77,10 @@ public class CommandResponse {
             identifierToWarpPlaceholder(identifier)
         );
     }
+
+    public static Component getDatabaseErrorResponse() {
+        return getErrorSerialiser().deserialize(
+            "<primary>An error occurred with the database. Please check the console for more details.</primary>"
+        );
+    }
 }
