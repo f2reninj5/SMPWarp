@@ -1,6 +1,6 @@
 package xyz.f2reninj5.smpwarp.common;
 
-import org.bukkit.entity.Player;
+import org.bukkit.command.CommandSender;
 import xyz.f2reninj5.smpwarp.SMPWarp;
 
 import java.sql.SQLException;
@@ -9,8 +9,8 @@ import static xyz.f2reninj5.smpwarp.common.CommandResponse.getDatabaseErrorRespo
 
 public class Command {
 
-    public static void handleDatabaseError(Player player, SQLException exception) {
+    public static void handleDatabaseError(CommandSender sender, SQLException exception) {
         SMPWarp.getPlugin().getLogger().severe(exception.getMessage());
-        player.sendMessage(getDatabaseErrorResponse());
+        sender.sendMessage(getDatabaseErrorResponse());
     }
 }
