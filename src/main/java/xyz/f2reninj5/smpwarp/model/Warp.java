@@ -13,10 +13,6 @@ public class Warp {
         this.createdBy = createdBy;
     }
 
-    public Warp(String group, String name, Location location, String createdBy) {
-        this(new WarpIdentifier(group, name), location, createdBy);
-    }
-
     public WarpIdentifier getIdentifier() {
         return identifier;
     }
