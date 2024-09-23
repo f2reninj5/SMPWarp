@@ -3,11 +3,9 @@ package xyz.f2reninj5.smpwarp.command;
 import io.papermc.paper.command.brigadier.BasicCommand;
 import io.papermc.paper.command.brigadier.CommandSourceStack;
 import net.kyori.adventure.text.Component;
+import org.bukkit.Location;
 import org.bukkit.command.CommandSender;
-import org.bukkit.conversations.Conversation;
-import org.bukkit.conversations.ConversationContext;
-import org.bukkit.conversations.ConversationFactory;
-import org.bukkit.conversations.Prompt;
+import org.bukkit.conversations.*;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 import xyz.f2reninj5.smpwarp.BlueMap;
@@ -19,6 +17,7 @@ import java.sql.SQLException;
 import java.util.Collection;
 import java.util.List;
 
+import static xyz.f2reninj5.smpwarp.common.Command.handleDatabaseError;
 import static xyz.f2reninj5.smpwarp.common.CommandResponse.*;
 
 public class RenameWarpCommand implements BasicCommand {
@@ -73,52 +72,62 @@ public class RenameWarpCommand implements BasicCommand {
 
     @Override
     public void execute(@NotNull CommandSourceStack stack, @NotNull String[] args) {
+        final CommandSender sender = stack.getSender();
+        final Player player = (Player) stack.getExecutor();
+        assert player != null;
+
         if (args.length < 1) {
-            stack.getSender().sendMessage(getNoWarpGivenResponse());
+            sender.sendMessage(getNoWarpGivenResponse());
             return;
         }
 
         WarpIdentifier identifer = WarpIdentifier.commandArgumentsToWarpIdentifier(args);
+        Warp warp;
 
         try {
-            Warp warp = SMPWarp.getWarpDatabase().getWarp(identifer);
-            if (warp == null) {
-                stack.getSender().sendMessage(getWarpNotFoundResponse(identifer));
-                return;
-            }
-
-            ConversationFactory conversationFactory = new ConversationFactory(SMPWarp.getPlugin())
-                .withFirstPrompt(new NewWarpNamePrompt())
-                .withEscapeSequence("cancel")
-                .withTimeout(30)
-                .addConversationAbandonedListener(abandonedEvent -> {
-                    if (abandonedEvent.gracefulExit()) {
-                        WarpIdentifier newIdentifier = (WarpIdentifier) abandonedEvent.getContext()
-                            .getSessionData("newWarpIdentifier");
-                        try {
-                            SMPWarp.getWarpDatabase().renameWarp(identifer, newIdentifier);
-                        } catch (SQLException exception) {
-                            throw new RuntimeException(exception);
-                        }
-                        if (SMPWarp.getPlugin().getConfig().getBoolean("enable-bluemap-markers")) {
-                            BlueMap.removeMarker(identifer);
-                            BlueMap.addMarker(new Warp(
-                                newIdentifier,
-                                warp.getLocation(),
-                                warp.getCreatedBy()
-                            ));
-                        }
-                        stack.getSender().sendMessage(getSuccessResponse(identifer, newIdentifier));
-                    } else {
-                        stack.getSender().sendMessage(getCancelResponse());
-                    }
-                });
-
-            Conversation conversation = conversationFactory.buildConversation((Player) stack.getSender());
-            conversation.begin();
+            warp = SMPWarp.getWarpDatabase().getWarp(identifer);
         } catch (SQLException exception) {
-            exception.printStackTrace();
+            handleDatabaseError(player, exception);
+            return;
         }
+
+        if (warp == null) {
+            sender.sendMessage(getWarpNotFoundResponse(identifer));
+            return;
+        }
+
+        ConversationFactory conversationFactory = new ConversationFactory(SMPWarp.getPlugin())
+            .withFirstPrompt(new NewWarpNamePrompt())
+            .withEscapeSequence("cancel")
+            .withTimeout(30)
+            .addConversationAbandonedListener(abandonedEvent -> {
+                if (abandonedEvent.gracefulExit()) {
+                    WarpIdentifier newIdentifier = (WarpIdentifier) abandonedEvent.getContext()
+                        .getSessionData("newWarpIdentifier");
+
+                    try {
+                        SMPWarp.getWarpDatabase().renameWarp(identifer, newIdentifier);
+                    } catch (SQLException exception) {
+                        handleDatabaseError(player, exception);
+                        return;
+                    }
+
+                    if (SMPWarp.getPlugin().getConfig().getBoolean("enable-bluemap-markers")) {
+                        BlueMap.removeMarker(identifer);
+                        BlueMap.addMarker(new Warp(
+                            newIdentifier,
+                            warp.getLocation(),
+                            warp.getCreatedBy()
+                        ));
+                    }
+                    sender.sendMessage(getSuccessResponse(identifer, newIdentifier));
+                } else {
+                    sender.sendMessage(getCancelResponse());
+                }
+            });
+
+        Conversation conversation = conversationFactory.buildConversation((Conversable) sender);
+        conversation.begin();
     }
 
     @Override
