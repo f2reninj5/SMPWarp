@@ -51,7 +51,7 @@ public class MoveWarpCommand implements BasicCommand {
                 ));
             }
 
-            SMPWarp.getWarpDatabase().moveWarp(identifier.getGroup(), identifier.getName(), stack.getLocation());
+            SMPWarp.getWarpDatabase().moveWarp(identifier, stack.getLocation());
             stack.getSender().sendMessage(getSuccessResponse(identifier));
         } catch (SQLException exception) {
             exception.printStackTrace();

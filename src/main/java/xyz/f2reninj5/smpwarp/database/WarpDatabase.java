@@ -179,7 +179,7 @@ public class WarpDatabase {
         }
     }
 
-    public void moveWarp(String group, String name, Location location) throws SQLException {
+    public void moveWarp(@NotNull WarpIdentifier identifier, @NotNull Location location) throws SQLException {
         try (PreparedStatement statement = connection.prepareStatement("""
             UPDATE warp
             SET x = ?,
@@ -196,8 +196,8 @@ public class WarpDatabase {
             statement.setFloat(4, location.getYaw());
             statement.setFloat(5, location.getPitch());
             statement.setString(6, location.getWorld().getUID().toString());
-            statement.setString(7, group);
-            statement.setString(8, name);
+            statement.setString(7, identifier.getGroup());
+            statement.setString(8, identifier.getName());
             statement.executeUpdate();
         }
     }
