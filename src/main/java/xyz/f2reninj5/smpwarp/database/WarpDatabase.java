@@ -197,14 +197,13 @@ public class WarpDatabase {
     }
 
     public void renameWarp(@NotNull WarpIdentifier oldIdentifier, @NotNull WarpIdentifier newIdentifier) throws SQLException {
-        try (PreparedStatement statement = connection.prepareStatement("""
+        PreparedStatement statement = connection.prepareStatement("""
             UPDATE warp SET `group` = ?, `name` = ? WHERE `group` = ? AND `name` = ?
-        """)) {
-            statement.setString(1, newIdentifier.getGroup());
-            statement.setString(2, newIdentifier.getName());
-            statement.setString(3, oldIdentifier.getGroup());
-            statement.setString(4, oldIdentifier.getName());
-            statement.executeUpdate();
-        }
+        """);
+        statement.setString(1, newIdentifier.getGroup());
+        statement.setString(2, newIdentifier.getName());
+        statement.setString(3, oldIdentifier.getGroup());
+        statement.setString(4, oldIdentifier.getName());
+        statement.executeUpdate();
     }
 }
