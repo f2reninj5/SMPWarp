@@ -169,12 +169,12 @@ public class WarpDatabase {
         }
     }
 
-    public void removeWarp(String group, String name) throws SQLException {
+    public void removeWarp(@NotNull WarpIdentifier identifier) throws SQLException {
         try (PreparedStatement statement = connection.prepareStatement("""
             DELETE FROM warp WHERE `group` = ? AND `name` = ?
         """)) {
-            statement.setString(1, group);
-            statement.setString(2, name);
+            statement.setString(1, identifier.getGroup());
+            statement.setString(2, identifier.getName());
             statement.executeUpdate();
         }
     }
