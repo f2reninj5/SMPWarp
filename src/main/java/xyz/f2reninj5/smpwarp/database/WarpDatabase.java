@@ -141,28 +141,28 @@ public class WarpDatabase {
     }
 
     public List<Warp> getAllWarps() throws SQLException {
-        try (Statement statement = connection.createStatement()) {
-            ResultSet resultSet = statement.executeQuery("SELECT * FROM warp");
-            List<Warp> warps = new ArrayList<>();
-            while (resultSet.next()) {
-                warps.add(new Warp(
-                    new WarpIdentifier(
-                        resultSet.getString("group"),
-                        resultSet.getString("name")
-                    ),
-                    new Location(
-                        Bukkit.getWorld(UUID.fromString(resultSet.getString("world"))),
-                        resultSet.getDouble("x"),
-                        resultSet.getDouble("y"),
-                        resultSet.getDouble("z"),
-                        resultSet.getFloat("yaw"),
-                        resultSet.getFloat("pitch")
-                    ),
-                    Bukkit.getPlayer(UUID.fromString(resultSet.getString("created_by")))
-                ));
-            }
-            return warps;
+        ResultSet resultSet = connection.createStatement().executeQuery("SELECT * FROM warp");
+
+        List<Warp> warps = new ArrayList<>();
+
+        while (resultSet.next()) {
+            warps.add(new Warp(
+                new WarpIdentifier(
+                    resultSet.getString("group"),
+                    resultSet.getString("name")
+                ),
+                new Location(
+                    Bukkit.getWorld(UUID.fromString(resultSet.getString("world"))),
+                    resultSet.getDouble("x"),
+                    resultSet.getDouble("y"),
+                    resultSet.getDouble("z"),
+                    resultSet.getFloat("yaw"),
+                    resultSet.getFloat("pitch")
+                ),
+                Bukkit.getPlayer(UUID.fromString(resultSet.getString("created_by")))
+            ));
         }
+        return warps;
     }
 
     public void removeWarp(@NotNull WarpIdentifier identifier) throws SQLException {
