@@ -77,7 +77,7 @@ public class WarpDatabase {
                         resultSet.getFloat("yaw"),
                         resultSet.getFloat("pitch")
                     ),
-                    resultSet.getString("created_by")
+                    Bukkit.getPlayer(UUID.fromString(resultSet.getString("created_by")))
                 );
             } else {
                 return null;
@@ -160,7 +160,7 @@ public class WarpDatabase {
                         resultSet.getFloat("yaw"),
                         resultSet.getFloat("pitch")
                     ),
-                    resultSet.getString("created_by")
+                    Bukkit.getPlayer(UUID.fromString(resultSet.getString("created_by")))
                 ));
             }
             return warps;

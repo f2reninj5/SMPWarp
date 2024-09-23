@@ -48,7 +48,7 @@ public class CreateWarpCommand implements BasicCommand {
                     BlueMap.addMarker(new Warp(
                         identifier,
                         location,
-                        stack.getExecutor().getUniqueId().toString()
+                        (Player) stack.getExecutor()
                     ));
                 }
 

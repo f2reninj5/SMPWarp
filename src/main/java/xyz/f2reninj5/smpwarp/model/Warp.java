@@ -1,13 +1,14 @@
 package xyz.f2reninj5.smpwarp.model;
 
 import org.bukkit.Location;
+import org.bukkit.entity.Player;
 
 public class Warp {
     private WarpIdentifier identifier;
     private Location location;
-    private String createdBy;
+    private Player createdBy;
 
-    public Warp(WarpIdentifier identifier, Location location, String createdBy) {
+    public Warp(WarpIdentifier identifier, Location location, Player createdBy) {
         this.identifier = identifier;
         this.location = location;
         this.createdBy = createdBy;
@@ -29,7 +30,7 @@ public class Warp {
         return location;
     }
 
-    public String getCreatedBy() {
+    public Player getCreatedBy() {
         return createdBy;
     }
 }
