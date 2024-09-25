@@ -41,7 +41,10 @@ public class BlueMap {
                 Map<String, MarkerSet> markerSets = map.getMarkerSets();
                 MarkerSet markerSet = markerSets.get("warps");
                 if (markerSet == null) {
-                    markerSet = MarkerSet.builder().label("Warps").build();
+                    markerSet = MarkerSet.builder()
+                        .label("Warps")
+                        .defaultHidden(SMPWarp.getPlugin().getConfig().getBoolean("hide-markers-by-default"))
+                        .build();
                 }
                 markerSets.put("warps", markerSet);
                 markerSet.put(marker.getLabel(), marker);
