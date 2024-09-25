@@ -1,3 +1,6 @@
 # You must have the BlueMap plugin enabled for this to work.
 # When set to true, places markers on BlueMap maps to visualise warp locations.
 enable-bluemap-markers: false
+# When set to true, markers will be hidden on the map by default.
+# To see them, you will have to toggle them in the map menu.
+hide-markers-by-default: true
