@@ -17,6 +17,7 @@ import java.sql.SQLException;
 import java.util.Collection;
 import java.util.List;
 
+import static xyz.f2reninj5.smpwarp.common.Command.getWarpGroupSuggestions;
 import static xyz.f2reninj5.smpwarp.common.Command.handleDatabaseError;
 import static xyz.f2reninj5.smpwarp.common.CommandResponse.*;
 
@@ -73,19 +74,7 @@ public class CreateWarpCommand implements BasicCommand {
 
     @Override
     public @NotNull Collection<String> suggest(@NotNull CommandSourceStack stack, @NotNull String[] args) {
-        final CommandSender sender = stack.getSender();
-
-        try {
-            if (args.length == 0) {
-                return SMPWarp.getWarpDatabase().getAllWarpGroups();
-            } else if (args.length == 1) {
-                return SMPWarp.getWarpDatabase().getWarpGroups(args[0]);
-            }
-        } catch(SQLException exception) {
-            handleDatabaseError(sender, exception);
-        }
-
-        return List.of();
+        return getWarpGroupSuggestions(stack, args);
     }
 
     @Override

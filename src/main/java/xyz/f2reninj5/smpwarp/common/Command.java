@@ -39,4 +39,20 @@ public class Command {
 
         return List.of();
     }
+
+    public static @NotNull Collection<String> getWarpGroupSuggestions(@NotNull CommandSourceStack stack, @NotNull String[] args) {
+        final CommandSender sender = stack.getSender();
+
+        try {
+            if (args.length == 0) {
+                return SMPWarp.getWarpDatabase().getAllWarpGroups();
+            } else if (args.length == 1) {
+                return SMPWarp.getWarpDatabase().getWarpGroups(args[0]);
+            }
+        } catch(SQLException exception) {
+            handleDatabaseError(sender, exception);
+        }
+
+        return List.of();
+    }
 }
